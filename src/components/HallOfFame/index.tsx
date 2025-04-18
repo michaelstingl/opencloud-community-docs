@@ -19,169 +19,13 @@ type Contributor = {
 // Contributors data is updated automatically by GitHub Actions
 const topContributors: Contributor[] = [
   {
-    login: 'felix-schwarz',
-    avatar_url: 'https://avatars.githubusercontent.com/u/639669?v=4',
-    html_url: 'https://github.com/felix-schwarz',
-    contributions: 21,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'prashant-gurung899',
-    avatar_url: 'https://avatars.githubusercontent.com/u/53248463?v=4',
-    html_url: 'https://github.com/prashant-gurung899',
-    contributions: 10,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'michaelstingl',
-    avatar_url: 'https://avatars.githubusercontent.com/u/214010?v=4',
-    html_url: 'https://github.com/michaelstingl',
-    contributions: 9,
+    login: 'community-contributor',
+    avatar_url: 'https://avatars.githubusercontent.com/u/583231?v=4',
+    html_url: 'https://github.com/octocat',
+    contributions: 1,
     isDocHero: true,
-    docHeroBadge: "🦸",
-    docContributions: 4,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'hosy',
-    avatar_url: 'https://avatars.githubusercontent.com/u/736109?v=4',
-    html_url: 'https://github.com/hosy',
-    contributions: 6,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'PrajwolAmatya',
-    avatar_url: 'https://avatars.githubusercontent.com/u/83579989?v=4',
-    html_url: 'https://github.com/PrajwolAmatya',
-    contributions: 5,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'dschmidt',
-    avatar_url: 'https://avatars.githubusercontent.com/u/448487?v=4',
-    html_url: 'https://github.com/dschmidt',
-    contributions: 4,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'LukasHirt',
-    avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
-    html_url: 'https://github.com/LukasHirt',
-    contributions: 2,
-    isDocHero: false,
-    docHeroBadge: null,
+    docHeroBadge: "📚",
     docContributions: 1,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'DeepDiver1975',
-    avatar_url: 'https://avatars.githubusercontent.com/u/1005065?v=4',
-    html_url: 'https://github.com/DeepDiver1975',
-    contributions: 2,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'ferenc-hechler',
-    avatar_url: 'https://avatars.githubusercontent.com/u/11094156?v=4',
-    html_url: 'https://github.com/ferenc-hechler',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'skatsubo',
-    avatar_url: 'https://avatars.githubusercontent.com/u/16467385?v=4',
-    html_url: 'https://github.com/skatsubo',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'FelixDobler',
-    avatar_url: 'https://avatars.githubusercontent.com/u/46747171?v=4',
-    html_url: 'https://github.com/FelixDobler',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'jochumdev',
-    avatar_url: 'https://avatars.githubusercontent.com/u/358074?v=4',
-    html_url: 'https://github.com/jochumdev',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'erikjv',
-    avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
-    html_url: 'https://github.com/erikjv',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'matteocorti',
-    avatar_url: 'https://avatars.githubusercontent.com/u/6011536?v=4',
-    html_url: 'https://github.com/matteocorti',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
     isGoHero: false,
     goHeroBadge: null,
     goContributions: 0
@@ -245,7 +89,7 @@ export default function HallOfFame(): React.ReactElement {
                       <div className={styles.badgeLabel} style={{backgroundColor: 'var(--ifm-color-success-dark)'}}>
                         <span className={styles.badgeEmoji}>🦫</span>
                         Code Gopher
-                        <span className={styles.badgeEmoji}>🧙</span>
+                        <span className={styles.badgeEmoji}>🏆</span>
                       </div>
                     )}
                   </div>
