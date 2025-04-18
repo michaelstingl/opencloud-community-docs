@@ -22,12 +22,22 @@ This component displays a Hall of Fame for OpenCloud community contributors base
 - Filtering logic checks GitHub profile information including company, bio, and username patterns
 - Exclusion lists are stored in a private repository for privacy
 
-### Documentation Hero Feature
-- The contributor with the most documentation changes receives a special badge
+### Hero Badges
+Contributors can earn multiple badges simultaneously if they excel in different contribution areas. For example, someone could be both a Documentation Hero and a Code Gopher if they made the most contributions in both categories.
+
+#### Documentation Hero Feature
+- The contributor with the most documentation changes receives a special "Documentation Hero" badge (📚🦸)
 - Documentation changes are identified by:
   - Commits to docs/ directories
   - Changes to .md and .mdx files
   - Documentation-specific repositories
+
+#### Code Gopher Feature
+- The contributor with the most Go code changes receives a special "Code Gopher" badge (🦫🧙)
+- Go code changes are identified by:
+  - Changes to .go files
+  - Changes to go.mod and go.sum files
+  - Changes in Go project directories like cmd/, pkg/, and internal/
 
 ### Logging Controls & Privacy
 - Detailed logging is available in verbose mode only
@@ -148,6 +158,54 @@ The script will automatically look for exclusion lists in the following location
 - To change the number of contributors shown, modify the `slice(0, 15)` in the script
 - Style changes can be made in `styles.module.css`
 - Default fallback exclusion rules are defined in the script but are minimal
+
+### Performance & API Usage
+
+The system is optimized to minimize GitHub API requests:
+
+- API data is cached where possible to reduce request count
+- When analyzing contribution types, files are only scanned once, regardless of how many contribution types exist
+- Adding new contribution types doesn't increase API request volume
+- The system tracks and logs API usage to help monitor rate limits
+
+### Adding New Hero Types
+
+The system is designed to be modular and easily extensible. To add a new hero type (e.g., "UI Hero" for UI/CSS contributions):
+
+1. Add a new class to `scripts/contribution-types.mjs`:
+   ```javascript
+   export class UiContributionType extends ContributionType {
+     constructor() {
+       super('Ui', '🎨', 'UI Hero', '✨', 'var(--ifm-color-primary-light)');
+     }
+     
+     isMatchingFile(file) {
+       return file.filename.endsWith('.css') || 
+              file.filename.endsWith('.scss') ||
+              /\/(components|ui)\//.test(file.filename);
+     }
+   }
+   ```
+
+2. Add your new type to the exported array:
+   ```javascript
+   export const contributionTypes = [
+     new DocumentationContributionType(),
+     new GoContributionType(),
+     new UiContributionType()  // New type
+   ];
+   ```
+
+3. Update the GitHub Actions workflow:
+   ```bash
+   # In .github/workflows/update-contributors-extensions.sh:
+   HERO_TYPES=("Doc:Documentation Hero:docContributions" "Go:Code Gopher:goContributions" "Ui:UI Hero:uiContributions")
+   
+   # In .github/workflows/update-contributors.yml:
+   HERO_MARKERS=("Doc:Documentation Hero" "Go:Code Gopher" "Ui:UI Hero")
+   ```
+
+No further changes are needed - the system will automatically detect the new hero type, analyze contributions, and display the appropriate badges.
 
 ## Troubleshooting
 

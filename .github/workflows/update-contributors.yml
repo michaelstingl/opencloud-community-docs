@@ -167,18 +167,14 @@ jobs:
             git diff --cached --stat
             
             # Commit the changes with timestamp and details
-            # Extract documentation hero name safely - find login of user marked with isDocHero: true
-            DOC_HERO=$(grep -B 3 "isDocHero: true" src/components/HallOfFame/index.tsx | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'$//g" || echo "unknown")
-            DOC_CONTRIBUTIONS=$(grep -A 10 "login: '${DOC_HERO}'" src/components/HallOfFame/index.tsx | grep -o "docContributions: [0-9]*" | head -1 | sed "s/docContributions: //g" || echo "unknown")
+            # Make the hero extraction script executable
+            chmod +x .github/workflows/update-contributors-extensions.sh
             
-            # Extract top community contributor (first entry in the contributors array)
-            TOP_CONTRIBUTOR=$(grep -o "login: '[^']*'" src/components/HallOfFame/index.tsx | head -1 | sed "s/login: '//g" | sed "s/'$//g" || echo "unknown")
-            TOP_CONTRIBUTIONS=$(grep -A 4 "login: '${TOP_CONTRIBUTOR}'" src/components/HallOfFame/index.tsx | grep -o "contributions: [0-9]*" | head -1 | sed "s/contributions: //g" || echo "unknown")
+            # Generate commit message with all hero types
+            COMMIT_MSG=$(.github/workflows/update-contributors-extensions.sh)
             
-            git commit -m "Update community hall of fame contributors [$(date -u '+%Y-%m-%d')]" \
-                     -m "Updated by GitHub Actions workflow" \
-                     -m "Top community contributor: ${TOP_CONTRIBUTOR} with ${TOP_CONTRIBUTIONS} contributions" \
-                     -m "Documentation Hero: ${DOC_HERO} with ${DOC_CONTRIBUTIONS} doc contributions"
+            # Commit with dynamic message that includes all hero types
+            git commit -m "$COMMIT_MSG"
             
             echo "Pushing changes..."
             git push
@@ -225,9 +221,18 @@ jobs:
           
           # Show if component was successfully updated
           if grep -q "isDocHero: true" src/components/HallOfFame/index.tsx 2>/dev/null; then
-            # Extract hero name safely - find login of user marked with isDocHero: true
-            DOC_HERO=$(grep -B 3 "isDocHero: true" src/components/HallOfFame/index.tsx | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'.*//g" || echo "unknown")
-            echo "✅ Documentation Hero: ${DOC_HERO} (correctly marked in component)"
+            # Check for all hero types
+            HERO_MARKERS=("Doc:Documentation Hero" "Go:Code Gopher")
+            
+            for TYPE_INFO in "${HERO_MARKERS[@]}"; do
+              IFS=":" read -r TYPE_PREFIX TYPE_NAME <<< "$TYPE_INFO"
+              
+              HERO=$(grep -B 3 "is${TYPE_PREFIX}Hero: true" src/components/HallOfFame/index.tsx | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'.*//g" || echo "")
+              
+              if [ -n "$HERO" ]; then
+                echo "✅ ${TYPE_NAME}: ${HERO} (correctly marked in component)"
+              fi
+            done
           else
             echo "⚠️ No Documentation Hero found in component"
           fi

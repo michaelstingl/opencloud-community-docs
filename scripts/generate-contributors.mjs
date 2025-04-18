@@ -3,6 +3,8 @@
 import { writeFileSync, readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { contributionTypes } from './contribution-types.mjs';
+import { ContributionAnalyzer } from './contribution-analyzer.mjs';
 
 // Check for verbose logging mode
 const VERBOSE_LOGGING = process.env.VERBOSE_LOGGING === 'true';
@@ -421,108 +423,12 @@ async function shouldExcludeUser(username) {
 // Note: The functionality of fetchRecentContributions has been integrated directly into 
 // the generateContributorData function for better optimization
 
-// Fetch documentation contributions (commits that modify docs/ dir or .md files)
-async function fetchDocumentationContributions(owner, repo, contributor, sinceTimestamp) {
-  // Convert Unix timestamp to ISO date for GitHub API
-  const sinceDate = new Date(sinceTimestamp * 1000).toISOString();
-  
-  try {
-    // Fetch commits for this user in this repo since the cutoff date
-    const commitsResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/commits?author=${contributor.login}&since=${sinceDate}&per_page=100`,
-      {
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
-    );
-    
-    // Check for rate limiting
-    const rateLimitRemaining = parseInt(commitsResponse.headers.get('x-ratelimit-remaining') || '1');
-    const rateLimitReset = parseInt(commitsResponse.headers.get('x-ratelimit-reset') || '0');
-    
-    if (rateLimitRemaining <= 5) {
-      // Rate limit nearly exceeded, skip detailed processing to conserve API calls
-      const resetDate = new Date(rateLimitReset * 1000);
-      console.warn(`⚠️ GitHub API rate limit nearly reached! Skipping detailed doc analysis to preserve remaining calls. Resets at ${resetDate.toISOString()}`);
-      return;
-    }
-    
-    if (!commitsResponse.ok) {
-      if (commitsResponse.status === 403) {
-        console.error(`🛑 API rate limit exceeded while fetching commits for ${contributor.login} in ${owner}/${repo}`);
-        return;
-      }
-      
-      console.error(`❌ Error fetching commits for ${contributor.login} in ${owner}/${repo}: ${commitsResponse.status} ${commitsResponse.statusText}`);
-      return;
-    }
-    
-    const commits = await commitsResponse.json();
-    
-    // If no commits found, exit early
-    if (!commits || commits.length === 0) {
-      return;
-    }
-    
-    // For each commit, check if it modified documentation files
-    let processedCommits = 0;
-    for (const commit of commits) {
-      try {
-        // Check if we're getting close to the rate limit
-        if (rateLimitRemaining - processedCommits <= 10) {
-          console.warn(`⚠️ Approaching API rate limit, stopping detailed commit analysis after ${processedCommits} commits`);
-          break;
-        }
-        
-        const commitDetailResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/commits/${commit.sha}`,
-          {
-            headers: {
-              Authorization: `token ${GITHUB_TOKEN}`,
-              Accept: 'application/vnd.github.v3+json',
-            },
-          }
-        );
-        
-        processedCommits++;
-        
-        if (!commitDetailResponse.ok) {
-          if (commitDetailResponse.status === 403) {
-            console.error(`🛑 API rate limit exceeded during commit detail analysis`);
-            return;
-          }
-          console.error(`❌ Error fetching commit ${commit.sha}: ${commitDetailResponse.status} ${commitDetailResponse.statusText}`);
-          continue;
-        }
-        
-        const commitDetail = await commitDetailResponse.json();
-        
-        // Check if any files in the commit are documentation files
-        const hasDocChanges = commitDetail.files?.some(file => 
-          file.filename.startsWith('docs/') || 
-          file.filename.endsWith('.md') ||
-          file.filename.endsWith('.mdx')
-        );
-        
-        if (hasDocChanges) {
-          contributor.docContributions++;
-        }
-      } catch (error) {
-        console.error(`❌ Error processing commit ${commit.sha}: ${error.message}`);
-      }
-    }
-    
-    if (contributor.docContributions > 0) {
-      log(`📚 ${contributor.login} has ${contributor.docContributions} documentation contributions in ${owner}/${repo}`, true);
-    }
-  } catch (error) {
-    console.error(`❌ Error in fetchDocumentationContributions: ${error.message}`);
-    if (error.stack) {
-      console.error(`Stack trace: ${error.stack}`);
-    }
-  }
+// Create an instance of the contribution analyzer
+const contributionAnalyzer = new ContributionAnalyzer(GITHUB_TOKEN, VERBOSE_LOGGING);
+
+// Function to analyze all contribution types for a contributor
+async function analyzeContributions(owner, repo, contributor, sinceTimestamp) {
+  await contributionAnalyzer.analyzeContributions(owner, repo, contributor, sinceTimestamp);
 }
 
 // Legacy method for fetching all contributors (fallback)
@@ -717,36 +623,24 @@ async function generateContributorData() {
       // Take only the first N repos to avoid excessive API usage
       const reposToAnalyze = prioritizedRepos.slice(0, MAX_REPOS_PER_CONTRIBUTOR);
       
-      log(`📊 Analyzing doc contributions for ${contributor.login} across ${reposToAnalyze.length} repositories...`, true);
+      log(`📊 Analyzing specialized contributions for ${contributor.login} across ${reposToAnalyze.length} repositories...`, true);
       
       for (const { owner, repo } of reposToAnalyze) {
         const ninetyDaysAgoUnix = Math.floor(ninetyDaysAgo.getTime() / 1000);
-        await fetchDocumentationContributions(owner, repo, contributor, ninetyDaysAgoUnix);
+        await analyzeContributions(owner, repo, contributor, ninetyDaysAgoUnix);
       }
     }
   }
   
-  // Find the Documentation Hero among community members
-  let docHero = null;
-  let maxDocContributions = 0;
-  
-  for (const contributor of communityContributors) {
-    if (contributor.docContributions > maxDocContributions) {
-      maxDocContributions = contributor.docContributions;
-      docHero = contributor.login;
+  // Find heroes for each contribution type
+  for (const type of contributionTypes) {
+    const { hero, maxContributions } = type.findHero(communityContributors);
+    
+    if (hero && maxContributions > 0) {
+      type.logHero(hero, maxContributions);
+      type.markHero(communityContributors, hero);
     }
   }
-  
-  if (docHero && maxDocContributions > 0) {
-    log(`📚 Documentation Hero is ${docHero} with ${maxDocContributions} doc contributions!`);
-    // Mark the doc hero in the data
-    for (const contributor of communityContributors) {
-      if (contributor.login === docHero) {
-        contributor.isDocHero = true;
-        contributor.docHeroBadge = "🦸"; // Superhero emoji badge
-        break;
-      }
-    }
   }
   
   // Sort contributors by number of contributions
@@ -767,16 +661,58 @@ async function updateHallOfFameComponent(contributors) {
   const componentPath = path.resolve(__dirname, '../src/components/HallOfFame/index.tsx');
   
   try {
+    // First create the type definition based on registered contribution types
+    let typeDefinition = `type Contributor = {
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  contributions: number;`;
+
+    // Add properties for each contribution type
+    for (const type of contributionTypes) {
+      typeDefinition += `
+  ${type.flagProperty}?: boolean;
+  ${type.badgeProperty}?: string;
+  ${type.countProperty}?: number;`;
+    }
+    
+    typeDefinition += `
+};`;
+    
     // Create the new contributors array as a string
-    const contributorsArrayString = contributors.map(contributor => `  {
+    const contributorsArrayString = contributors.map(contributor => {
+      let contribObj = `  {
     login: '${contributor.login}',
     avatar_url: '${contributor.avatar_url}',
     html_url: '${contributor.html_url}',
-    contributions: ${contributor.contributions},
-    isDocHero: ${contributor.isDocHero || false},
-    docHeroBadge: ${contributor.docHeroBadge ? `"${contributor.docHeroBadge}"` : 'null'},
-    docContributions: ${contributor.docContributions || 0},
-  }`).join(',\n');
+    contributions: ${contributor.contributions}`;
+      
+      // Add properties for each contribution type
+      for (const type of contributionTypes) {
+        contribObj += `,
+    ${type.flagProperty}: ${contributor[type.flagProperty] || false},
+    ${type.badgeProperty}: ${contributor[type.badgeProperty] ? `"${contributor[type.badgeProperty]}"` : 'null'},
+    ${type.countProperty}: ${contributor[type.countProperty] || 0}`;
+      }
+      
+      contribObj += `
+  }`;
+      
+      return contribObj;
+    }).join(',\n');
+    
+    // Generate badge components for all hero types
+    let badgeComponents = '';
+    for (const type of contributionTypes) {
+      badgeComponents += `
+                    {contributor.${type.flagProperty} && (
+                      <div className={styles.badgeLabel} style={{backgroundColor: '${type.color}'}}>
+                        <span className={styles.badgeEmoji}>${type.emoji}</span>
+                        ${type.badgeName}
+                        <span className={styles.badgeEmoji}>${type.badgeEmoji}</span>
+                      </div>
+                    )}`;
+    }
     
     // Generate the entire component file content from scratch
     const newComponentContent = `import React from 'react';
@@ -784,15 +720,7 @@ import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 // Type definition for contributors
-type Contributor = {
-  login: string;
-  avatar_url: string;
-  html_url: string;
-  contributions: number;
-  isDocHero?: boolean;
-  docHeroBadge?: string;
-  docContributions?: number;
-};
+${typeDefinition}
 
 // Contributors data is updated automatically by GitHub Actions
 const topContributors: Contributor[] = [
@@ -844,13 +772,7 @@ export default function HallOfFame(): React.ReactElement {
                         {contributor.contributions} contributions
                       </div>
                     </a>
-                    {contributor.isDocHero && (
-                      <div className={styles.badgeLabel}>
-                        <span className={styles.badgeEmoji}>📚</span>
-                        Documentation Hero
-                        <span className={styles.badgeEmoji}>🦸</span>
-                      </div>
-                    )}
+${badgeComponents}
                   </div>
                 </div>
               ))}
