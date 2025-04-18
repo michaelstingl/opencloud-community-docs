@@ -257,9 +257,9 @@ async function prioritizeRepositories(repoList) {
   // Let's check all repositories to make sure we find all Go repos
   log(`🔍 Fetching language information for repositories...`);
   
-  // Track repos with Go code
-  const goRepos = [];
-  const markdownRepos = [];
+  // Track repos with Go code - use global variables to ensure accessibility throughout the script
+  global.goRepos = [];
+  global.markdownRepos = [];
   
   // First identify common Go repos by name pattern for quick pre-identification
   const potentialGoRepos = reposWithLanguageInfo.filter(repo => 
@@ -339,7 +339,7 @@ async function prioritizeRepositories(repoList) {
         log(`📊 Repository ${repo.repo} has ${repo.goPercentage.toFixed(1)}% Go code`, true);
         
         if (repo.goPercentage >= 10) { // At least 10% Go code
-          goRepos.push(repo);
+          global.goRepos.push(repo);
         }
       } else {
         repo.goPercentage = 0;
@@ -349,8 +349,10 @@ async function prioritizeRepositories(repoList) {
       if (languages.Markdown && totalBytes > 0) {
         repo.markdownPercentage = (languages.Markdown / totalBytes) * 100;
         
-        if (repo.markdownPercentage >= 30) { // At least 30% Markdown
-          markdownRepos.push(repo);
+        // Lower threshold for Markdown to catch repositories with meaningful documentation
+        // even if they're primarily code repositories (10% is still significant documentation)
+        if (repo.markdownPercentage >= 10 || languages.Markdown > 100000) { // At least 10% Markdown or 100KB of docs
+          global.markdownRepos.push(repo);
         }
       }
     } catch (error) {
@@ -359,19 +361,19 @@ async function prioritizeRepositories(repoList) {
   }
   
   // Log summary of repository types found
-  log(`📊 Found ${goRepos.length} repositories with significant Go code`);
-  if (goRepos.length > 0) {
-    log(`   Go repositories: ${goRepos.map(r => r.repo).join(', ')}`);
+  log(`📊 Found ${global.goRepos.length} repositories with significant Go code`);
+  if (global.goRepos.length > 0) {
+    log(`   Go repositories: ${global.goRepos.map(r => r.repo).join(', ')}`);
   }
   
-  log(`📊 Found ${markdownRepos.length} repositories with significant Markdown content`);
-  if (markdownRepos.length > 0) {
-    log(`   Documentation repositories: ${markdownRepos.map(r => r.repo).join(', ')}`);
+  log(`📊 Found ${global.markdownRepos.length} repositories with significant Markdown content`);
+  if (global.markdownRepos.length > 0) {
+    log(`   Documentation repositories: ${global.markdownRepos.map(r => r.repo).join(', ')}`);
   }
   
-  // Use goRepos array for priority sorting
-  const isGoRepo = repo => goRepos.some(r => r.repo === repo.repo);
-  const isDocRepo = repo => markdownRepos.some(r => r.repo === repo.repo);
+  // Use global repository arrays for priority sorting
+  const isGoRepo = repo => global.goRepos.some(r => r.repo === repo.repo);
+  const isDocRepo = repo => global.markdownRepos.some(r => r.repo === repo.repo);
   
   // Sort repos with priority repos first, then Go repos, then by recency/activity
   return reposWithLanguageInfo.sort((a, b) => {
@@ -768,7 +770,10 @@ async function generateContributorData() {
     const MAX_REPOS_PER_CONTRIBUTOR = 10; // Increased to include more Go repos
     
     // Use repository language information already collected
-    // This reuses the goRepos and markdownRepos arrays from the language analysis step
+    // Make sure the arrays are defined to prevent errors
+    const goRepos = Array.isArray(global.goRepos) ? global.goRepos : [];
+    const markdownRepos = Array.isArray(global.markdownRepos) ? global.markdownRepos : [];
+    
     const repoGoCache = new Set(goRepos.map(r => r.repo));
     const repoDocCache = new Set(markdownRepos.map(r => r.repo));
     
@@ -784,7 +789,7 @@ async function generateContributorData() {
     
     const analysisDocRepos = repositories.filter(r => 
       repoDocCache.has(r.repo) ||
-      r.markdownPercentage >= 30 ||
+      r.markdownPercentage >= 10 ||  // Lower threshold to match our repository detection
       r.repo === 'docs' || 
       r.repo === 'community-nexus' || 
       r.repo.includes('doc')

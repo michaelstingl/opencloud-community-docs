@@ -93,7 +93,8 @@ jobs:
           
           # Run the script with environment variables
           # Node.js v18+ already has built-in fetch
-          NODE_OPTIONS='--no-warnings' node scripts/generate-contributors.mjs
+          # Use debug mode to get more information about potential errors
+          NODE_OPTIONS='--no-warnings --trace-warnings' node --trace-uncaught scripts/generate-contributors.mjs
           
           echo "::endgroup::"
           
