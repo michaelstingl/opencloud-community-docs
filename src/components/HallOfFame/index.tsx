@@ -11,6 +11,9 @@ type Contributor = {
   isDocHero?: boolean;
   docHeroBadge?: string;
   docContributions?: number;
+  isGoHero?: boolean;
+  goHeroBadge?: string;
+  goContributions?: number;
 };
 
 // Contributors data is updated automatically by GitHub Actions
@@ -23,15 +26,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
-  },
-  {
-    login: 'michaelstingl',
-    avatar_url: 'https://avatars.githubusercontent.com/u/214010?v=4',
-    html_url: 'https://github.com/michaelstingl',
-    contributions: 11,
-    isDocHero: true,
-    docHeroBadge: "🦸",
-    docContributions: 5,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'prashant-gurung899',
@@ -40,7 +37,22 @@ const topContributors: Contributor[] = [
     contributions: 10,
     isDocHero: false,
     docHeroBadge: null,
-    docContributions: 3,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
+    login: 'michaelstingl',
+    avatar_url: 'https://avatars.githubusercontent.com/u/214010?v=4',
+    html_url: 'https://github.com/michaelstingl',
+    contributions: 9,
+    isDocHero: true,
+    docHeroBadge: "🦸",
+    docContributions: 4,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'hosy',
@@ -50,6 +62,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'PrajwolAmatya',
@@ -59,6 +74,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'dschmidt',
@@ -68,6 +86,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'LukasHirt',
@@ -77,6 +98,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 1,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'DeepDiver1975',
@@ -86,15 +110,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
-  },
-  {
-    login: 'Tronde',
-    avatar_url: 'https://avatars.githubusercontent.com/u/3941069?v=4',
-    html_url: 'https://github.com/Tronde',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 1,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'ferenc-hechler',
@@ -104,6 +122,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'skatsubo',
@@ -113,6 +134,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'FelixDobler',
@@ -122,6 +146,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'jochumdev',
@@ -131,6 +158,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'erikjv',
@@ -140,6 +170,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   },
   {
     login: 'matteocorti',
@@ -149,6 +182,9 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
   }
 ];
 
@@ -197,11 +233,19 @@ export default function HallOfFame(): React.ReactElement {
                         {contributor.contributions} contributions
                       </div>
                     </a>
+
                     {contributor.isDocHero && (
-                      <div className={styles.badgeLabel}>
+                      <div className={styles.badgeLabel} style={{backgroundColor: 'var(--ifm-color-primary-darker)'}}>
                         <span className={styles.badgeEmoji}>📚</span>
                         Documentation Hero
                         <span className={styles.badgeEmoji}>🦸</span>
+                      </div>
+                    )}
+                    {contributor.isGoHero && (
+                      <div className={styles.badgeLabel} style={{backgroundColor: 'var(--ifm-color-success-dark)'}}>
+                        <span className={styles.badgeEmoji}>🦫</span>
+                        Code Gopher
+                        <span className={styles.badgeEmoji}>🧙</span>
                       </div>
                     )}
                   </div>
