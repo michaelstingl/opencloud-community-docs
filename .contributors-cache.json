@@ -1,6 +1,6 @@
 {
-  "timestamp": 1744932036774,
-  "createdAt": "2025-04-17T23:20:36.774Z",
+  "timestamp": 1744928304795,
+  "createdAt": "2025-04-17T22:18:24.795Z",
   "count": 15,
   "contributors": [
     {
@@ -10,7 +10,7 @@
       "contributions": 86,
       "docContributions": 26,
       "isDocHero": true,
-      "docHeroBadge": "🦸"
+      "docHeroBadge": "📚"
     },
     {
       "login": "felix-schwarz",
@@ -18,6 +18,13 @@
       "html_url": "https://github.com/felix-schwarz",
       "contributions": 21,
       "docContributions": 0
+    },
+    {
+      "login": "Heiko-Pohl",
+      "avatar_url": "https://avatars.githubusercontent.com/u/194484975?v=4",
+      "html_url": "https://github.com/Heiko-Pohl",
+      "contributions": 14,
+      "docContributions": 11
     },
     {
       "login": "michaelstingl",
@@ -55,11 +62,18 @@
       "docContributions": 0
     },
     {
+      "login": "LisaHue",
+      "avatar_url": "https://avatars.githubusercontent.com/u/194485717?v=4",
+      "html_url": "https://github.com/LisaHue",
+      "contributions": 2,
+      "docContributions": 2
+    },
+    {
       "login": "LukasHirt",
       "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
       "html_url": "https://github.com/LukasHirt",
       "contributions": 2,
-      "docContributions": 1
+      "docContributions": 0
     },
     {
       "login": "DeepDiver1975",
@@ -83,13 +97,6 @@
       "docContributions": 0
     },
     {
-      "login": "skatsubo",
-      "avatar_url": "https://avatars.githubusercontent.com/u/16467385?v=4",
-      "html_url": "https://github.com/skatsubo",
-      "contributions": 1,
-      "docContributions": 0
-    },
-    {
       "login": "FelixDobler",
       "avatar_url": "https://avatars.githubusercontent.com/u/46747171?v=4",
       "html_url": "https://github.com/FelixDobler",
@@ -100,13 +107,6 @@
       "login": "jochumdev",
       "avatar_url": "https://avatars.githubusercontent.com/u/358074?v=4",
       "html_url": "https://github.com/jochumdev",
-      "contributions": 1,
-      "docContributions": 0
-    },
-    {
-      "login": "erikjv",
-      "avatar_url": "https://avatars.githubusercontent.com/u/151956?v=4",
-      "html_url": "https://github.com/erikjv",
       "contributions": 1,
       "docContributions": 0
     }
