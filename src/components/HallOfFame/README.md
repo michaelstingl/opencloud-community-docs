@@ -69,6 +69,42 @@ Contributor exclusion lists are stored in a private repository:
 
 For access to the exclusion list repository, contact the repository administrators.
 
+### Private Repository Format
+
+The exclusions file must follow this format in the private repository:
+
+```javascript
+// Configuration for excluding certain contributors
+// This file is maintained in a private repository for privacy reasons
+
+// Organizations and companies to exclude
+exports.EXCLUDED_COMPANIES = [
+  'Company Name 1', 
+  'Company Name 2'
+];
+
+// Bot account patterns to exclude
+exports.BOT_PATTERNS = ['[bot]']; 
+
+// Keywords to check in user bio
+exports.BIO_KEYWORDS = [
+  'keyword1', 
+  'keyword2'
+];
+
+// Specific users to exclude
+exports.EXCLUDED_USERS = [
+  // Group 1
+  'username1',
+  'username2',
+  
+  // Group 2
+  'username3'
+];
+```
+
+The file must be located at `/config/contributor-exclusions.js` in the private repository.
+
 ### Required Secrets
 
 The workflow requires the following repository secrets to be set:
@@ -82,20 +118,30 @@ Without this token, the workflow will not be able to access the private exclusio
 If you want to test the contributor script locally:
 
 ```bash
-# Clone the repository
+# Clone both repositories
 git clone https://github.com/opencloud-community/nexus.git
 cd nexus
+
+# Clone the private exclusions repository (if you have access)
+git clone https://github.com/opencloud-community/gmbh.git ../gmbh
 
 # Set your GitHub token (create one at https://github.com/settings/tokens)
 # Token needs repo and read:org permissions
 export GITHUB_TOKEN=your_github_token_here
 
-# Optional: Enable verbose logging
+# Optional: Enable verbose logging for detailed output
 export VERBOSE_LOGGING=true
+
+# Optional: Force refresh to bypass caching
+export FORCE_REFRESH=true
 
 # Run the script
 node scripts/generate-contributors.mjs
 ```
+
+The script will automatically look for exclusion lists in the following locations:
+1. `../../gmbh/config/contributor-exclusions.js` (if you cloned as shown above)
+2. `../private-exclusions/config/contributor-exclusions.js` (GitHub Actions path)
 
 ## Customization
 
@@ -113,3 +159,11 @@ If the component is not updating:
 4. Check if the private exclusion list repository is accessible
 5. Look for `.contributors-cache.json` and `.repo-cache.json` in the repository
 6. Try running the script locally with your own token
+
+### Common Issues
+
+- **Missing exclusions**: Make sure the format in `contributor-exclusions.js` follows the exact format shown above
+- **ES Module errors**: The script uses ESM format (`.mjs`), so CommonJS syntax like `require()` won't work
+- **Rate limiting**: GitHub API has rate limits, especially for unauthenticated requests
+- **Parsing errors**: Comments in the exclusion lists can sometimes cause parsing issues in the arrays
+- **Empty arrays**: If an exclusion list is empty, it may be logged as "0 users" but this shouldn't affect functionality
