@@ -31,6 +31,8 @@ Contributors can earn multiple badges simultaneously if they excel in different 
   - Commits to docs/ directories
   - Changes to .md and .mdx files
   - Documentation-specific repositories
+  - Repositories with at least 10% Markdown content (lower threshold for better detection)
+  - Repositories with more than 100KB of Markdown content (absolute size threshold)
 
 #### Code Gopher Feature
 - The contributor with the most Go code changes receives a special "Code Gopher" badge (🦫🧙)
@@ -217,6 +219,7 @@ If the component is not updating:
 4. Check if the private exclusion list repository is accessible
 5. Look for `.contributors-cache.json` and `.repo-cache.json` in the repository
 6. Try running the script locally with your own token
+7. Ensure both the update-contributors and deploy workflows have access to the exclusion repository
 
 ### Common Issues
 
@@ -226,12 +229,25 @@ If the component is not updating:
 - **Parsing errors**: Comments in the exclusion lists can sometimes cause parsing issues in the arrays
 - **Empty arrays**: If an exclusion list is empty, it may be logged as "0 users" but this shouldn't affect functionality
 - **Node.js fetch compatibility**: The script uses the built-in `fetch` API available in Node.js v18+. No external fetch library is needed. If you see errors related to `fetch`, make sure you're using Node.js v18.0.0 or higher.
+- **"goRepos is not defined" errors**: These occur when the script tries to use variables before they're defined or across module boundaries. Fixed by using global variables and proper async function structure.
+- **Missing exclusion repository**: The private repository with exclusion lists must be checked out in both workflows. Both the `update-contributors.yml` and `deploy.yml` workflows need the `checkout` step for the private repository.
 
 ### Node.js Version Requirements
 
 This component uses the following Node.js features:
 - **ES Modules**: Scripts use the `.mjs` extension and ES module syntax
-- **Top-level await**: For API calls and file operations
+- **Top-level await**: For API calls and file operations (now properly wrapped in async functions)
 - **Built-in fetch API**: Available in Node.js v18+ (no need for `node-fetch` package)
+- **Global variables**: Used across module functions for tracking repository types
 
 GitHub Actions workflows are configured to use Node.js v18, which supports all these features. If running locally, ensure you're using at least Node.js v18.0.0.
+
+#### Important Implementation Notes
+
+To avoid "goRepos is not defined" and similar errors:
+- Repository type arrays (`goRepos` and `markdownRepos`) are defined as global variables
+- All async functions properly use `async` keyword and `await` for calls
+- Helper functions like `prioritizeRepositories` are defined as async functions
+- The script avoids top-level await at module scope, which can cause issues in some environments
+
+Both the direct contributor update (via `update-contributors.yml`) and the pre-build process (via `deploy.yml`) run the same script with the same requirements.
