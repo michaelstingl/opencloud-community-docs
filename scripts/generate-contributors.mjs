@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { contributionTypes } from './contribution-types.mjs';
 import { ContributionAnalyzer } from './contribution-analyzer.mjs';
+import fetch from 'node-fetch';
 
 // Check for verbose logging mode
 const VERBOSE_LOGGING = process.env.VERBOSE_LOGGING === 'true';

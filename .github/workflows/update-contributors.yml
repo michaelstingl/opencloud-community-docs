@@ -87,8 +87,15 @@ jobs:
             echo "📝 Minimal logging - less detailed output will be shown"
           fi
           
-          # Run the script with environment variables
-          node scripts/generate-contributors.mjs
+          # Check Node.js version and debug
+          echo "Using Node.js $(node --version)"
+          echo "Using npm $(npm --version)"
+          
+          # Ensure node-fetch is installed (correct version)
+          npm list node-fetch || npm install node-fetch@2
+          
+          # Run the script with environment variables and experimental features
+          NODE_OPTIONS='--no-warnings' node scripts/generate-contributors.mjs
           
           echo "::endgroup::"
           
@@ -194,8 +201,14 @@ jobs:
           # Get current time for reference
           TRIGGER_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
           
-          # Run deployment workflow
-          gh workflow run "Deploy to GitHub Pages" --repo ${{ github.repository }}
+          # Pass verbose_logging flag from this workflow to the deployment workflow
+          if [ "${{ github.event.inputs.verbose_logging }}" == "true" ]; then
+            echo "🔊 Triggering deployment with verbose logging enabled"
+            gh workflow run "Deploy to GitHub Pages" --repo ${{ github.repository }} -f verbose_logging=true
+          else
+            echo "🔇 Triggering deployment with standard logging"
+            gh workflow run "Deploy to GitHub Pages" --repo ${{ github.repository }}
+          fi
           
           echo "Deployment workflow triggered at $TRIGGER_TIME"
           echo "Visit https://github.com/${{ github.repository }}/actions to monitor deployment progress"

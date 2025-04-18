@@ -1,5 +1,6 @@
 // contribution-analyzer.mjs
 import { contributionTypes } from './contribution-types.mjs';
+import fetch from 'node-fetch';
 
 export class ContributionAnalyzer {
   constructor(githubToken, verboseLogging = false) {
