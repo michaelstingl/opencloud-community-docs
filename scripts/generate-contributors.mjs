@@ -63,7 +63,7 @@ async function fetchOrgRepositories() {
           
           if (cacheAge < oneDayMs) {
             log(`🔄 Using cached repository list (${cache.repos.length} repos, cached ${Math.round(cacheAge / (60 * 60 * 1000))} hours ago)`);
-            return prioritizeRepositories(cache.repos);
+            return await prioritizeRepositories(cache.repos);
           }
         }
       } catch (err) {
@@ -207,7 +207,7 @@ async function fetchOrgRepositories() {
     log(`✅ Found ${repoList.length} public repositories in ${ORGANIZATION}`);
     
     // Filter and prioritize
-    return prioritizeRepositories(repoList);
+    return await prioritizeRepositories(repoList);
   } catch (error) {
     console.error(`❌ Error fetching organization repositories: ${error.message}`);
     console.error('Stack trace:', error.stack);
@@ -223,7 +223,7 @@ async function fetchOrgRepositories() {
 }
 
 // Helper function to prioritize repositories for analysis
-function prioritizeRepositories(repoList) {
+async function prioritizeRepositories(repoList) {
   // Include forks of specified priority repos, filter out other forks
   const forkCount = repoList.filter(repo => repo.isFork).length;
   const filteredRepos = repoList.filter(repo => {
