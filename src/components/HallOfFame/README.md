@@ -20,6 +20,7 @@ This component displays a Hall of Fame for OpenCloud community contributors base
 - OpenCloud employees and contractors are filtered out automatically
 - Bots and automated accounts are excluded
 - Filtering logic checks GitHub profile information including company, bio, and username patterns
+- Exclusion lists are stored in a private repository for privacy
 
 ### Documentation Hero Feature
 - The contributor with the most documentation changes receives a special badge
@@ -27,6 +28,11 @@ This component displays a Hall of Fame for OpenCloud community contributors base
   - Commits to docs/ directories
   - Changes to .md and .mdx files
   - Documentation-specific repositories
+
+### Logging Controls & Privacy
+- Detailed logging is available in verbose mode only
+- Employee names and exclusion details are not logged in standard mode
+- Verbose mode can be enabled via workflow dispatch parameter when needed
 
 ### Rate Limit Handling & Caching
 - The script intelligently respects GitHub API rate limits
@@ -50,6 +56,18 @@ You can manually trigger the GitHub Action to update contributors:
 1. Go to the repository on GitHub
 2. Navigate to Actions → "Update Contributor Stats"
 3. Click "Run workflow"
+4. (Optional) Enable "Force refresh" to ignore cache and fetch fresh data
+5. (Optional) Enable "Verbose logging" if you need detailed diagnostic information
+
+## Exclusion List Management
+
+Contributor exclusion lists are stored in a private repository:
+- Employees and contractors lists
+- Company/organization patterns
+- Bio keywords to check
+- Other excluded users
+
+For access to the exclusion list repository, contact the repository administrators.
 
 ## Local Testing
 
@@ -64,6 +82,9 @@ cd nexus
 # Token needs repo and read:org permissions
 export GITHUB_TOKEN=your_github_token_here
 
+# Optional: Enable verbose logging
+export VERBOSE_LOGGING=true
+
 # Run the script
 node scripts/generate-contributors.mjs
 ```
@@ -72,13 +93,15 @@ node scripts/generate-contributors.mjs
 
 - To change the number of contributors shown, modify the `slice(0, 15)` in the script
 - Style changes can be made in `styles.module.css`
-- Employee exclusion can be modified in the `EXCLUDED_USERS` and `EXCLUDED_COMPANIES` arrays
+- Default fallback exclusion rules are defined in the script but are minimal
 
 ## Troubleshooting
 
 If the component is not updating:
 
 1. Check GitHub Actions logs for any errors or rate limit issues
-2. Verify your GitHub token has sufficient permissions
-3. Look for `.contributors-cache.json` and `.repo-cache.json` in the repository
-4. Try running the script locally with your own token
+2. Try running with "Force refresh" and "Verbose logging" options enabled
+3. Verify your GitHub token has sufficient permissions
+4. Check if the private exclusion list repository is accessible
+5. Look for `.contributors-cache.json` and `.repo-cache.json` in the repository
+6. Try running the script locally with your own token
