@@ -1,6 +1,6 @@
 {
-  "timestamp": 1744940051361,
-  "createdAt": "2025-04-18T01:34:11.361Z",
+  "timestamp": 1744940453802,
+  "createdAt": "2025-04-18T01:40:53.802Z",
   "count": 15,
   "contributors": [
     {
@@ -46,20 +46,6 @@
       "html_url": "https://github.com/aduffeck",
       "contributions": 86,
       "docContributions": 26
-    },
-    {
-      "login": "individual-it",
-      "avatar_url": "https://avatars.githubusercontent.com/u/2425577?v=4",
-      "html_url": "https://github.com/individual-it",
-      "contributions": 76,
-      "docContributions": 15
-    },
-    {
-      "login": "tbsbdr",
-      "avatar_url": "https://avatars.githubusercontent.com/u/26610733?v=4",
-      "html_url": "https://github.com/tbsbdr",
-      "contributions": 65,
-      "docContributions": 30
     },
     {
       "login": "fschade",
@@ -109,6 +95,20 @@
       "html_url": "https://github.com/michaelstingl",
       "contributions": 11,
       "docContributions": 5
+    },
+    {
+      "login": "prashant-gurung899",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53248463?v=4",
+      "html_url": "https://github.com/prashant-gurung899",
+      "contributions": 10,
+      "docContributions": 3
+    },
+    {
+      "login": "hosy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/736109?v=4",
+      "html_url": "https://github.com/hosy",
+      "contributions": 6,
+      "docContributions": 0
     }
   ]
 }

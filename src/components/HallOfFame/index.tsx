@@ -70,24 +70,6 @@ const topContributors: Contributor[] = [
     docContributions: 26,
   },
   {
-    login: 'individual-it',
-    avatar_url: 'https://avatars.githubusercontent.com/u/2425577?v=4',
-    html_url: 'https://github.com/individual-it',
-    contributions: 76,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 15,
-  },
-  {
-    login: 'tbsbdr',
-    avatar_url: 'https://avatars.githubusercontent.com/u/26610733?v=4',
-    html_url: 'https://github.com/tbsbdr',
-    contributions: 65,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 30,
-  },
-  {
     login: 'fschade',
     avatar_url: 'https://avatars.githubusercontent.com/u/49308105?v=4',
     html_url: 'https://github.com/fschade',
@@ -149,6 +131,24 @@ const topContributors: Contributor[] = [
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 5,
+  },
+  {
+    login: 'prashant-gurung899',
+    avatar_url: 'https://avatars.githubusercontent.com/u/53248463?v=4',
+    html_url: 'https://github.com/prashant-gurung899',
+    contributions: 10,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 3,
+  },
+  {
+    login: 'hosy',
+    avatar_url: 'https://avatars.githubusercontent.com/u/736109?v=4',
+    html_url: 'https://github.com/hosy',
+    contributions: 6,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
   }
 ];
 
