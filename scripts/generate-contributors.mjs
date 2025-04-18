@@ -641,7 +641,6 @@ async function generateContributorData() {
       type.markHero(communityContributors, hero);
     }
   }
-  }
   
   // Sort contributors by number of contributions
   const sortedContributors = communityContributors
