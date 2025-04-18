@@ -91,10 +91,8 @@ jobs:
           echo "Using Node.js $(node --version)"
           echo "Using npm $(npm --version)"
           
-          # Ensure node-fetch is installed (correct version)
-          npm list node-fetch || npm install node-fetch@2
-          
-          # Run the script with environment variables and experimental features
+          # Run the script with environment variables
+          # Node.js v18+ already has built-in fetch
           NODE_OPTIONS='--no-warnings' node scripts/generate-contributors.mjs
           
           echo "::endgroup::"
