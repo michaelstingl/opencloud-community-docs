@@ -1,16 +1,86 @@
 {
-  "timestamp": 1744928304795,
-  "createdAt": "2025-04-17T22:18:24.795Z",
+  "timestamp": 1744938908407,
+  "createdAt": "2025-04-18T01:15:08.407Z",
   "count": 15,
   "contributors": [
+    {
+      "login": "JammingBen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50302941?v=4",
+      "html_url": "https://github.com/JammingBen",
+      "contributions": 487,
+      "docContributions": 14
+    },
+    {
+      "login": "TheOneRing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/200626?v=4",
+      "html_url": "https://github.com/TheOneRing",
+      "contributions": 300,
+      "docContributions": 0
+    },
+    {
+      "login": "rhafer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/373399?v=4",
+      "html_url": "https://github.com/rhafer",
+      "contributions": 155,
+      "docContributions": 30
+    },
+    {
+      "login": "ScharfViktor",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84779829?v=4",
+      "html_url": "https://github.com/ScharfViktor",
+      "contributions": 132,
+      "docContributions": 58,
+      "isDocHero": true,
+      "docHeroBadge": "🦸"
+    },
+    {
+      "login": "butonic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/956847?v=4",
+      "html_url": "https://github.com/butonic",
+      "contributions": 104,
+      "docContributions": 38
+    },
     {
       "login": "aduffeck",
       "avatar_url": "https://avatars.githubusercontent.com/u/203813?v=4",
       "html_url": "https://github.com/aduffeck",
       "contributions": 86,
-      "docContributions": 26,
-      "isDocHero": true,
-      "docHeroBadge": "📚"
+      "docContributions": 26
+    },
+    {
+      "login": "individual-it",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2425577?v=4",
+      "html_url": "https://github.com/individual-it",
+      "contributions": 76,
+      "docContributions": 15
+    },
+    {
+      "login": "tbsbdr",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26610733?v=4",
+      "html_url": "https://github.com/tbsbdr",
+      "contributions": 65,
+      "docContributions": 30
+    },
+    {
+      "login": "guruz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959327?v=4",
+      "html_url": "https://github.com/guruz",
+      "contributions": 45,
+      "docContributions": 0
+    },
+    {
+      "login": "fschade",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49308105?v=4",
+      "html_url": "https://github.com/fschade",
+      "contributions": 25,
+      "docContributions": 4
+    },
+    {
+      "login": "dragotin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1070214?v=4",
+      "html_url": "https://github.com/dragotin",
+      "contributions": 24,
+      "docContributions": 15
     },
     {
       "login": "felix-schwarz",
@@ -18,6 +88,13 @@
       "html_url": "https://github.com/felix-schwarz",
       "contributions": 21,
       "docContributions": 0
+    },
+    {
+      "login": "Svanvith",
+      "avatar_url": "https://avatars.githubusercontent.com/u/193597294?v=4",
+      "html_url": "https://github.com/Svanvith",
+      "contributions": 20,
+      "docContributions": 18
     },
     {
       "login": "Heiko-Pohl",
@@ -32,83 +109,6 @@
       "html_url": "https://github.com/michaelstingl",
       "contributions": 11,
       "docContributions": 5
-    },
-    {
-      "login": "prashant-gurung899",
-      "avatar_url": "https://avatars.githubusercontent.com/u/53248463?v=4",
-      "html_url": "https://github.com/prashant-gurung899",
-      "contributions": 10,
-      "docContributions": 3
-    },
-    {
-      "login": "hosy",
-      "avatar_url": "https://avatars.githubusercontent.com/u/736109?v=4",
-      "html_url": "https://github.com/hosy",
-      "contributions": 6,
-      "docContributions": 0
-    },
-    {
-      "login": "PrajwolAmatya",
-      "avatar_url": "https://avatars.githubusercontent.com/u/83579989?v=4",
-      "html_url": "https://github.com/PrajwolAmatya",
-      "contributions": 5,
-      "docContributions": 0
-    },
-    {
-      "login": "dschmidt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/448487?v=4",
-      "html_url": "https://github.com/dschmidt",
-      "contributions": 4,
-      "docContributions": 0
-    },
-    {
-      "login": "LisaHue",
-      "avatar_url": "https://avatars.githubusercontent.com/u/194485717?v=4",
-      "html_url": "https://github.com/LisaHue",
-      "contributions": 2,
-      "docContributions": 2
-    },
-    {
-      "login": "LukasHirt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
-      "html_url": "https://github.com/LukasHirt",
-      "contributions": 2,
-      "docContributions": 0
-    },
-    {
-      "login": "DeepDiver1975",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1005065?v=4",
-      "html_url": "https://github.com/DeepDiver1975",
-      "contributions": 2,
-      "docContributions": 0
-    },
-    {
-      "login": "Tronde",
-      "avatar_url": "https://avatars.githubusercontent.com/u/3941069?v=4",
-      "html_url": "https://github.com/Tronde",
-      "contributions": 1,
-      "docContributions": 1
-    },
-    {
-      "login": "ferenc-hechler",
-      "avatar_url": "https://avatars.githubusercontent.com/u/11094156?v=4",
-      "html_url": "https://github.com/ferenc-hechler",
-      "contributions": 1,
-      "docContributions": 0
-    },
-    {
-      "login": "FelixDobler",
-      "avatar_url": "https://avatars.githubusercontent.com/u/46747171?v=4",
-      "html_url": "https://github.com/FelixDobler",
-      "contributions": 1,
-      "docContributions": 0
-    },
-    {
-      "login": "jochumdev",
-      "avatar_url": "https://avatars.githubusercontent.com/u/358074?v=4",
-      "html_url": "https://github.com/jochumdev",
-      "contributions": 1,
-      "docContributions": 0
     }
   ]
 }
