@@ -261,10 +261,14 @@ let EXCLUDED_USERS = [];
 
 // Try to import configuration from private repository
 try {
+  // In ESM modules, need to compute __dirname dynamically
+  const scriptFilename = fileURLToPath(import.meta.url);
+  const scriptDir = path.dirname(scriptFilename);
+  
   // Try multiple potential paths - for local development and GitHub Actions
   const potentialPaths = [
-    path.resolve(__dirname, '../../gmbh/config/contributor-exclusions.js'),       // Local dev path
-    path.resolve(__dirname, '../private-exclusions/config/contributor-exclusions.js'), // GitHub Actions path
+    path.resolve(scriptDir, '../../gmbh/config/contributor-exclusions.js'),       // Local dev path
+    path.resolve(scriptDir, '../private-exclusions/config/contributor-exclusions.js'), // GitHub Actions path
   ];
   
   // In ES modules, we need to use dynamic imports and fs promises
@@ -322,8 +326,9 @@ ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - DAYS_TO_LOOK_BACK);
 const ninetyDaysAgoISOString = ninetyDaysAgo.toISOString();
 log(`🗓️ Looking for contributions since: ${ninetyDaysAgoISOString} (${DAYS_TO_LOOK_BACK} days)`);
 
-// Get current directory
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Get current directory (for ES Modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Check if a user should be excluded (company employee or bot)
 async function shouldExcludeUser(username) {
