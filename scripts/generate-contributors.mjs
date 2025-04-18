@@ -283,16 +283,43 @@ try {
     // Since we can't require() in ES modules, load the file content and parse it
     const fileContent = readFileSync(exclusionsPath, 'utf8');
     
-    // Extract the arrays using regex for simple parsing
+    // Log the found exclusion file path (but not its contents)
+    log(`📋 Loading exclusions from: ${exclusionsPath}`);
+    
+    // Print file content in verbose mode only for debugging
+    if (VERBOSE_LOGGING) {
+      log(`File content first 200 chars: ${fileContent.substring(0, 200)}...`, true);
+    }
+    
+    // Extract the arrays using regex for simple parsing - with improved handling of multi-line content with comments
     const extractArray = (name) => {
-      const regex = new RegExp(`exports\\.${name}\\s*=\\s*\\[(.*?)\\]`, 's');
+      const regex = new RegExp(`exports\\.${name}\\s*=\\s*\\[(.*?)\\];`, 's');
       const match = fileContent.match(regex);
+      
       if (match && match[1]) {
-        // Parse the array content safely
+        // Clean up the array content - remove comments and handle multiline format
+        let arrayContent = match[1]
+          .split('\n')
+          .map(line => {
+            // Remove comments from each line
+            const commentPos = line.indexOf('//');
+            return commentPos >= 0 ? line.substring(0, commentPos) : line;
+          })
+          .filter(line => line.trim())  // Remove empty lines
+          .map(line => {
+            // Extract just the username strings
+            const stringMatch = line.match(/['"]([^'"]+)['"]/);
+            return stringMatch ? `"${stringMatch[1]}"` : null;
+          })
+          .filter(Boolean)  // Remove null entries
+          .join(',');
+        
+        // Parse the cleaned array content
         try {
-          return JSON.parse(`[${match[1].replace(/'/g, '"')}]`);
+          return JSON.parse(`[${arrayContent}]`);
         } catch (e) {
           log(`⚠️ Error parsing ${name} from exclusion file: ${e.message}`, true);
+          log(`Problematic content: [${arrayContent}]`, true);
           return null;
         }
       }
