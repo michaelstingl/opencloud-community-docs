@@ -28,7 +28,7 @@ const topContributors: Contributor[] = [
     login: 'TheOneRing',
     avatar_url: 'https://avatars.githubusercontent.com/u/200626?v=4',
     html_url: 'https://github.com/TheOneRing',
-    contributions: 300,
+    contributions: 323,
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 0,
