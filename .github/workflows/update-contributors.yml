@@ -27,8 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout public repository
         uses: actions/checkout@v4
+      
+      - name: Checkout private exclusion repository
+        uses: actions/checkout@v4
+        with:
+          repository: opencloud-community/gmbh
+          path: private-exclusions
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,11 +48,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .contributors-cache.json
             .repo-cache.json
-          key: ${{ runner.os }}-github-data-${{ github.run_id }}
+          key: ${{ runner.os }}-github-repo-data-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-github-data-
+            ${{ runner.os }}-github-repo-data-
             
       # Delete existing cache files when force refresh is enabled
       - name: Clean existing cache files if force refresh
@@ -53,6 +59,12 @@ jobs:
         run: |
           echo "🧹 Force refresh enabled - removing existing cache files"
           rm -f .contributors-cache.json .repo-cache.json || true
+          
+      # Always clean contributor cache to ensure exclusion list is applied
+      - name: Clean contributor cache to apply new exclusions
+        run: |
+          echo "🧹 Cleaning contributor cache to apply latest exclusions"
+          rm -f .contributors-cache.json || true
       
       - name: Run contributor script
         run: |

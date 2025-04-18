@@ -69,6 +69,14 @@ Contributor exclusion lists are stored in a private repository:
 
 For access to the exclusion list repository, contact the repository administrators.
 
+### Required Secrets
+
+The workflow requires the following repository secrets to be set:
+
+- `PRIVATE_REPO_TOKEN`: A GitHub token with access to the private exclusion list repository
+
+Without this token, the workflow will not be able to access the private exclusion lists and will fall back to basic filtering only.
+
 ## Local Testing
 
 If you want to test the contributor script locally:

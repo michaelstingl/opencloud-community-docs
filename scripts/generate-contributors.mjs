@@ -263,9 +263,16 @@ let EXCLUDED_USERS = [];
 try {
   // Check if the exclusions file exists
   const fs = require('fs');
-  const exclusionsPath = path.resolve(__dirname, '../../gmbh/config/contributor-exclusions.js');
+  // Try multiple potential paths - for local development and GitHub Actions
+  const potentialPaths = [
+    path.resolve(__dirname, '../../gmbh/config/contributor-exclusions.js'),       // Local dev path
+    path.resolve(__dirname, '../private-exclusions/config/contributor-exclusions.js'), // GitHub Actions path
+  ];
   
-  if (fs.existsSync(exclusionsPath)) {
+  // Find the first path that exists
+  const exclusionsPath = potentialPaths.find(p => fs.existsSync(p));
+  
+  if (exclusionsPath) {
     log('📋 Loading contributor exclusions from private configuration');
     const exclusions = require(exclusionsPath);
     
