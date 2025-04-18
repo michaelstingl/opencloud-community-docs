@@ -20,6 +20,9 @@ export class ContributionAnalyzer {
     // Convert Unix timestamp to ISO date for GitHub API
     const sinceDate = new Date(sinceTimestamp * 1000).toISOString();
     
+    // Log which repository we're analyzing
+    this.log(`📂 Analyzing ${owner}/${repo} for ${contributor.login}...`, false);
+    
     try {
       // Initialize contribution counts if they don't exist
       contributionTypes.forEach(type => {
@@ -136,9 +139,17 @@ export class ContributionAnalyzer {
           
           // Analyze each file once
           for (const file of commitDetail.files) {
+            // Enhanced debug logging for Go files
+            if (this.verboseLogging && (file.filename.endsWith('.go') || file.filename === 'go.mod')) {
+              console.log(`🔎 Found Go file: ${file.filename} in commit ${commit.sha.substring(0, 7)} by ${contributor.login}`);
+            }
+            
             // Check against all contribution types
             for (const type of contributionTypes) {
               if (type.isMatchingFile(file)) {
+                if (this.verboseLogging) {
+                  console.log(`✅ File ${file.filename} matched type ${type.name} for ${contributor.login}`);
+                }
                 matchedTypes.add(type);
               }
             }

@@ -34,11 +34,12 @@ if (!GITHUB_TOKEN) {
 const ORGANIZATION = 'opencloud-eu';
 
 // Priority repos to analyze first (most likely to have community contributions)
+// We'll keep some manually prioritized repos, but will also use GitHub API language data
 const PRIORITY_REPOS = [
-  'community-nexus',
-  'docs',
-  'awesome-apps',
-  'helm'
+  'community-nexus', // Website and contribution stats 
+  'docs',           // Documentation
+  'awesome-apps',   // List of apps
+  'helm'            // Kubernetes charts
 ];
 
 // Function to fetch all public repositories of the organization
@@ -223,11 +224,24 @@ async function fetchOrgRepositories() {
 
 // Helper function to prioritize repositories for analysis
 function prioritizeRepositories(repoList) {
-  // Filter out forks
-  const nonForkRepos = repoList.filter(repo => !repo.isFork);
-  log(`📦 Found ${nonForkRepos.length} non-fork repositories (filtered out ${repoList.length - nonForkRepos.length} forks)`);
+  // Include forks of specified priority repos, filter out other forks
+  const forkCount = repoList.filter(repo => repo.isFork).length;
+  const filteredRepos = repoList.filter(repo => {
+    // Keep non-forks
+    if (!repo.isFork) return true;
+    
+    // Keep forks of priority repos
+    if (PRIORITY_REPOS.includes(repo.repo)) {
+      log(`📦 Including fork of priority repo: ${repo.repo}`, true);
+      return true;
+    }
+    
+    return false;
+  });
   
-  if (nonForkRepos.length === 0) {
+  log(`📦 Found ${filteredRepos.length} repositories (filtered out ${repoList.length - filteredRepos.length} non-priority forks out of ${forkCount} total forks)`);
+  
+  if (filteredRepos.length === 0) {
     console.warn('⚠️ No repositories found after filtering. Using predefined priority repos as fallback');
     return PRIORITY_REPOS.map(repoName => ({
       owner: ORGANIZATION,
@@ -236,14 +250,156 @@ function prioritizeRepositories(repoList) {
     }));
   }
   
-  // Sort repos with priority repos first, then by recency/activity
-  return nonForkRepos.sort((a, b) => {
+  // Fetch language information for repositories to prioritize by language
+  const reposWithLanguageInfo = [...filteredRepos];
+  
+  // Calculate how many repos we can check without hitting rate limits
+  // Let's check all repositories to make sure we find all Go repos
+  log(`🔍 Fetching language information for repositories...`);
+  
+  // Track repos with Go code
+  const goRepos = [];
+  const markdownRepos = [];
+  
+  // First identify common Go repos by name pattern for quick pre-identification
+  const potentialGoRepos = reposWithLanguageInfo.filter(repo => 
+    repo.repo === 'opencloud' || 
+    repo.repo === 'reva' || 
+    repo.repo === 'rclone' ||
+    repo.repo === 'cs3api-validator' ||
+    repo.repo === 'libre-graph-api' ||
+    repo.repo.includes('go-') ||
+    repo.repo.endsWith('-go')
+  );
+  
+  // First identify documentation repos by name pattern
+  const potentialDocRepos = reposWithLanguageInfo.filter(repo => 
+    repo.repo === 'docs' || 
+    repo.repo === 'community-nexus' || 
+    repo.repo.includes('doc') ||
+    repo.repo.includes('docs') ||
+    repo.repo.includes('website')
+  );
+  
+  log(`🔍 Pre-identified ${potentialGoRepos.length} potential Go repos and ${potentialDocRepos.length} potential doc repos by name`);
+  
+  // Process pre-identified repos first
+  const priorityFetch = [...potentialGoRepos];
+  // Then process all other repos
+  const otherRepos = reposWithLanguageInfo.filter(repo => 
+    !potentialGoRepos.includes(repo) && !potentialDocRepos.includes(repo)
+  );
+  
+  // Fetch languages for all repositories in priority order
+  const reposToFetch = [...priorityFetch, ...otherRepos];
+  
+  // Use a more reasonable limit based on likely API rate limits
+  const MAX_REPOS_TO_CHECK = Math.min(30, reposToFetch.length);
+  let checkedRepos = 0;
+  
+  for (const repo of reposToFetch) {
+    // Limit the number of repos we check to avoid excessive API calls
+    if (checkedRepos >= MAX_REPOS_TO_CHECK) {
+      log(`⚠️ Reached limit of ${MAX_REPOS_TO_CHECK} repositories checked for languages. Some repositories may not be properly categorized.`);
+      break;
+    }
+    
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${repo.owner}/${repo.repo}/languages`,
+        {
+          headers: {
+            Authorization: `token ${GITHUB_TOKEN}`,
+            Accept: 'application/vnd.github.v3+json',
+          },
+        }
+      );
+      
+      checkedRepos++;
+      
+      if (!response.ok) {
+        continue;
+      }
+      
+      const languages = await response.json();
+      repo.languages = languages;
+      
+      // Calculate total bytes
+      const totalBytes = Object.values(languages).reduce((sum, bytes) => sum + bytes, 0);
+      
+      // Calculate percentage of each language
+      Object.keys(languages).forEach(lang => {
+        const percentage = (languages[lang] / totalBytes) * 100;
+        repo[`${lang.toLowerCase()}Percentage`] = percentage;
+      });
+      
+      // Track Go repositories
+      if (languages.Go && totalBytes > 0) {
+        repo.goPercentage = (languages.Go / totalBytes) * 100;
+        log(`📊 Repository ${repo.repo} has ${repo.goPercentage.toFixed(1)}% Go code`, true);
+        
+        if (repo.goPercentage >= 10) { // At least 10% Go code
+          goRepos.push(repo);
+        }
+      } else {
+        repo.goPercentage = 0;
+      }
+      
+      // Track Markdown repositories (likely documentation)
+      if (languages.Markdown && totalBytes > 0) {
+        repo.markdownPercentage = (languages.Markdown / totalBytes) * 100;
+        
+        if (repo.markdownPercentage >= 30) { // At least 30% Markdown
+          markdownRepos.push(repo);
+        }
+      }
+    } catch (error) {
+      log(`❌ Error fetching languages for ${repo.repo}: ${error.message}`, true);
+    }
+  }
+  
+  // Log summary of repository types found
+  log(`📊 Found ${goRepos.length} repositories with significant Go code`);
+  if (goRepos.length > 0) {
+    log(`   Go repositories: ${goRepos.map(r => r.repo).join(', ')}`);
+  }
+  
+  log(`📊 Found ${markdownRepos.length} repositories with significant Markdown content`);
+  if (markdownRepos.length > 0) {
+    log(`   Documentation repositories: ${markdownRepos.map(r => r.repo).join(', ')}`);
+  }
+  
+  // Use goRepos array for priority sorting
+  const isGoRepo = repo => goRepos.some(r => r.repo === repo.repo);
+  const isDocRepo = repo => markdownRepos.some(r => r.repo === repo.repo);
+  
+  // Sort repos with priority repos first, then Go repos, then by recency/activity
+  return reposWithLanguageInfo.sort((a, b) => {
     // Priority repos first
     const aIsPriority = PRIORITY_REPOS.includes(a.repo);
     const bIsPriority = PRIORITY_REPOS.includes(b.repo);
     
     if (aIsPriority && !bIsPriority) return -1;
     if (!aIsPriority && bIsPriority) return 1;
+    
+    // Then known Go repos second (identified by language data)
+    const aIsGoRepo = isGoRepo(a);
+    const bIsGoRepo = isGoRepo(b);
+    
+    if (aIsGoRepo && !bIsGoRepo) return -1;
+    if (!aIsGoRepo && bIsGoRepo) return 1;
+    
+    // If both are Go repos, sort by percentage
+    if (aIsGoRepo && bIsGoRepo) {
+      return (b.goPercentage || 0) - (a.goPercentage || 0);
+    }
+    
+    // Then doc repos
+    const aIsDocRepo = isDocRepo(a);
+    const bIsDocRepo = isDocRepo(b);
+    
+    if (aIsDocRepo && !bIsDocRepo) return -1;
+    if (!aIsDocRepo && bIsDocRepo) return 1;
     
     // Then sort by most recently pushed
     if (a.pushed_at && b.pushed_at) {
@@ -603,27 +759,94 @@ async function generateContributorData() {
   // ONLY NOW get documentation contributions for community members
   log('📚 Analyzing documentation contributions for community members...');
   
-  // Skip documentation analysis if we have no repositories 
+  // Skip analysis if we have no repositories 
   // (likely due to API limits or permission issues)
   if (repositories.length === 0) {
-    console.warn('⚠️ Skipping documentation analysis as no repositories were found');
+    console.warn('⚠️ Skipping contribution analysis as no repositories were found');
   } else {
     // Limit repositories analyzed per contributor to avoid excessive API calls
-    const MAX_REPOS_PER_CONTRIBUTOR = 5;
+    const MAX_REPOS_PER_CONTRIBUTOR = 10; // Increased to include more Go repos
     
-    // Prioritize repositories most likely to have documentation
-    const prioritizedRepos = [...repositories].sort((a, b) => {
-      // Docs repo gets highest priority
-      if (a.repo.includes('docs')) return -1;
-      if (b.repo.includes('docs')) return 1;
-      return 0;
-    });
+    // Use repository language information already collected
+    // This reuses the goRepos and markdownRepos arrays from the language analysis step
+    const repoGoCache = new Set(goRepos.map(r => r.repo));
+    const repoDocCache = new Set(markdownRepos.map(r => r.repo));
     
+    const analysisGoRepos = repositories.filter(r => 
+      repoGoCache.has(r.repo) || 
+      r.goPercentage >= 10 || 
+      r.repo === 'opencloud' || 
+      r.repo === 'reva' ||
+      r.repo === 'libre-graph-api' || 
+      r.repo === 'cs3api-validator' || 
+      r.repo === 'rclone'
+    );
+    
+    const analysisDocRepos = repositories.filter(r => 
+      repoDocCache.has(r.repo) ||
+      r.markdownPercentage >= 30 ||
+      r.repo === 'docs' || 
+      r.repo === 'community-nexus' || 
+      r.repo.includes('doc')
+    );
+    
+    // Log repository breakdown
+    log(`📊 Repository breakdown for contribution analysis:`);
+    log(`   - ${analysisGoRepos.length} Go repositories: ${analysisGoRepos.map(r => r.repo).join(', ')}`);
+    log(`   - ${analysisDocRepos.length} Documentation repositories: ${analysisDocRepos.map(r => r.repo).join(', ')}`);
+    log(`   - ${repositories.length - analysisGoRepos.length - analysisDocRepos.length} Other repositories`);
+    
+    // Create optimized analysis plan - prioritize repositories by type for each contributor
     for (const contributor of communityContributors) {
+      // Create a custom prioritized list for each contributor type
+      const prioritizedRepos = [...repositories];
+      
+      // Prioritize repositories most likely to have various contribution types
+      prioritizedRepos.sort((a, b) => {
+        // Give higher priority to repos that match the contributor's known contributions
+        
+        // If contributor has already shown doc contributions, prioritize doc repos
+        if (contributor.docContributions > 0) {
+          const aIsDocRepo = analysisDocRepos.some(r => r.repo === a.repo);
+          const bIsDocRepo = analysisDocRepos.some(r => r.repo === b.repo);
+          if (aIsDocRepo && !bIsDocRepo) return -1;
+          if (!aIsDocRepo && bIsDocRepo) return 1;
+        }
+        
+        // If contributor has already shown Go contributions, prioritize Go repos
+        if (contributor.goContributions > 0) {
+          const aIsGoRepo = analysisGoRepos.some(r => r.repo === a.repo);
+          const bIsGoRepo = analysisGoRepos.some(r => r.repo === b.repo);
+          if (aIsGoRepo && !bIsGoRepo) return -1;
+          if (!aIsGoRepo && bIsGoRepo) return 1;
+        }
+        
+        // Default prioritization - Go repos then doc repos
+        const aIsGoRepo = analysisGoRepos.some(r => r.repo === a.repo);
+        const bIsGoRepo = analysisGoRepos.some(r => r.repo === b.repo);
+        
+        if (aIsGoRepo && !bIsGoRepo) return -1;
+        if (!aIsGoRepo && bIsGoRepo) return 1;
+        
+        const aIsDocRepo = analysisDocRepos.some(r => r.repo === a.repo);
+        const bIsDocRepo = analysisDocRepos.some(r => r.repo === b.repo);
+        
+        if (aIsDocRepo && !bIsDocRepo) return -1;
+        if (!aIsDocRepo && bIsDocRepo) return 1;
+        
+        return 0;
+      });
+      
       // Take only the first N repos to avoid excessive API usage
       const reposToAnalyze = prioritizedRepos.slice(0, MAX_REPOS_PER_CONTRIBUTOR);
       
-      log(`📊 Analyzing specialized contributions for ${contributor.login} across ${reposToAnalyze.length} repositories...`, true);
+      log(`📊 Analyzing contributions for ${contributor.login} across ${reposToAnalyze.length} repositories...`, true);
+      
+      // Log types of repositories being analyzed for this contributor
+      const goReposForContributor = reposToAnalyze.filter(r => analysisGoRepos.some(gr => gr.repo === r.repo));
+      const docReposForContributor = reposToAnalyze.filter(r => analysisDocRepos.some(dr => dr.repo === r.repo));
+      
+      log(`   - ${goReposForContributor.length} Go repos, ${docReposForContributor.length} Doc repos, ${reposToAnalyze.length - goReposForContributor.length - docReposForContributor.length} other repos`, true);
       
       for (const { owner, repo } of reposToAnalyze) {
         const ninetyDaysAgoUnix = Math.floor(ninetyDaysAgo.getTime() / 1000);
@@ -636,9 +859,30 @@ async function generateContributorData() {
   for (const type of contributionTypes) {
     const { hero, maxContributions } = type.findHero(communityContributors);
     
+    // Enhanced debug output about contributions
+    console.log(`🔍 Analyzing contributions for ${type.name} type:`);
+    
+    // Get all contributors with this type of contribution
+    const contributorsWithType = communityContributors.filter(c => c[type.countProperty] > 0);
+    
+    if (contributorsWithType.length > 0) {
+      console.log(`  ✓ Found ${contributorsWithType.length} contributors with ${type.name} contributions:`);
+      
+      // List contributors and their contributions (sorted by contribution count)
+      contributorsWithType
+        .sort((a, b) => b[type.countProperty] - a[type.countProperty])
+        .forEach(c => {
+          console.log(`    - ${c.login}: ${c[type.countProperty]} ${type.name.toLowerCase()} contributions`);
+        });
+    } else {
+      console.log(`  ✗ No contributors found with ${type.name} contributions`);
+    }
+    
     if (hero && maxContributions > 0) {
       type.logHero(hero, maxContributions);
       type.markHero(communityContributors, hero);
+    } else {
+      console.log(`❌ No ${type.badgeName} selected - no qualifying contributions found`);
     }
   }
   

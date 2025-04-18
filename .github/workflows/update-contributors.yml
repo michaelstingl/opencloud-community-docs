@@ -220,22 +220,22 @@ jobs:
           fi
           
           # Show if component was successfully updated
-          if grep -q "isDocHero: true" src/components/HallOfFame/index.tsx 2>/dev/null; then
-            # Check for all hero types
-            HERO_MARKERS=("Doc:Documentation Hero" "Go:Code Gopher")
+          # Check for all hero types independently
+          HERO_MARKERS=("Doc:Documentation Hero" "Go:Code Gopher")
+          
+          for TYPE_INFO in "${HERO_MARKERS[@]}"; do
+            IFS=":" read -r TYPE_PREFIX TYPE_NAME <<< "$TYPE_INFO"
             
-            for TYPE_INFO in "${HERO_MARKERS[@]}"; do
-              IFS=":" read -r TYPE_PREFIX TYPE_NAME <<< "$TYPE_INFO"
-              
+            if grep -q "is${TYPE_PREFIX}Hero: true" src/components/HallOfFame/index.tsx 2>/dev/null; then
               HERO=$(grep -B 3 "is${TYPE_PREFIX}Hero: true" src/components/HallOfFame/index.tsx | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'.*//g" || echo "")
               
               if [ -n "$HERO" ]; then
                 echo "✅ ${TYPE_NAME}: ${HERO} (correctly marked in component)"
               fi
-            done
-          else
-            echo "⚠️ No Documentation Hero found in component"
-          fi
+            else
+              echo "⚠️ No ${TYPE_NAME} found in component"
+            fi
+          done
           
           # Check update status
           if [ "${{ steps.commit.outputs.changes_made }}" == "true" ]; then

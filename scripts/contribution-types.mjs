@@ -72,7 +72,7 @@ export class DocumentationContributionType extends ContributionType {
 // Go code contribution type
 export class GoContributionType extends ContributionType {
   constructor() {
-    super('Go', '🦫', 'Code Gopher', '🧙', 'var(--ifm-color-success-dark)');
+    super('Go', '🦫', 'Code Gopher', '🏆', 'var(--ifm-color-success-dark)');
   }
   
   isMatchingFile(file) {
