@@ -1,0 +1,238 @@
+name: Update Contributor Stats
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Run daily at 3:00 UTC (5:00 CET)
+  workflow_dispatch:     # Allow manual trigger
+    inputs:
+      force_refresh:
+        description: "Ignore cache and fetch fresh data from GitHub API"
+        type: boolean
+        default: false
+        required: false
+      verbose_logging:
+        description: "Enable detailed logging output"
+        type: boolean
+        default: false
+        required: false
+  # Removed push trigger to avoid duplicate workflow executions
+
+# Required permissions for pushing changes and triggering other workflows
+permissions:
+  contents: write
+  actions: write       # Needed to trigger other workflows
+
+jobs:
+  update-contributors:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      # Cache the GitHub API response data to reduce API calls
+      - name: Cache GitHub API data
+        if: ${{ github.event.inputs.force_refresh != 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: |
+            .contributors-cache.json
+            .repo-cache.json
+          key: ${{ runner.os }}-github-data-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-github-data-
+            
+      # Delete existing cache files when force refresh is enabled
+      - name: Clean existing cache files if force refresh
+        if: ${{ github.event.inputs.force_refresh == 'true' }}
+        run: |
+          echo "🧹 Force refresh enabled - removing existing cache files"
+          rm -f .contributors-cache.json .repo-cache.json || true
+      
+      - name: Run contributor script
+        run: |
+          echo "::group::Running contributor script"
+          
+          # Set environment variables
+          export FORCE_REFRESH="${{ github.event.inputs.force_refresh == 'true' }}"
+          export VERBOSE_LOGGING="${{ github.event.inputs.verbose_logging == 'true' }}"
+          
+          # Log execution mode
+          if [ "$FORCE_REFRESH" == "true" ]; then
+            echo "🔄 Force refresh enabled - ignoring cache and fetching fresh data"
+          else
+            echo "🔄 Normal mode - using cache if available and fresh"
+          fi
+          
+          if [ "$VERBOSE_LOGGING" == "true" ]; then
+            echo "📝 Verbose logging enabled - full output will be shown"
+          else
+            echo "📝 Minimal logging - less detailed output will be shown"
+          fi
+          
+          # Run the script with environment variables
+          node scripts/generate-contributors.mjs
+          
+          echo "::endgroup::"
+          
+          echo "::group::Debug file changes"
+          # List all modified files to debug what changed
+          git status --porcelain
+          
+          # Check if the component was modified
+          if git diff --name-only | grep -q "src/components/HallOfFame/index.tsx"; then
+            echo "✅ Hall of Fame component was successfully updated"
+            git diff --stat src/components/HallOfFame/index.tsx
+          else
+            echo "⚠️ Hall of Fame component was NOT updated - investigating..."
+            # Check if the file exists
+            ls -la src/components/HallOfFame/index.tsx || echo "File does not exist!"
+            
+            # Check file permissions
+            stat src/components/HallOfFame/index.tsx || echo "Cannot stat file!"
+          fi
+          echo "::endgroup::"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Commit changes
+        id: commit
+        run: |
+          echo "::group::Preparing git commit"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Check for file changes before adding
+          echo "📁 Files that should be checked for changes:"
+          echo "- src/components/HallOfFame/index.tsx"
+          echo "- .contributors-cache.json"
+          echo "- .repo-cache.json"
+          echo ""
+          
+          # Enhanced debug of component file
+          echo "Checking Hall of Fame component file..."
+          if [ -f "src/components/HallOfFame/index.tsx" ]; then
+            # Check if file was modified by our script
+            if grep -q "isDocHero: true" src/components/HallOfFame/index.tsx; then
+              echo "✅ Documentation Hero is correctly marked in the code"
+            else
+              echo "⚠️ Documentation Hero is NOT marked in the code, but should be"
+              head -n 50 src/components/HallOfFame/index.tsx | grep -A 5 aduffeck || echo "aduffeck entry not found or malformatted"
+            fi
+          else
+            echo "❌ Hall of Fame component file not found! This is a critical error."
+          fi
+          
+          # Add all potential changed files with verbose output
+          echo "Adding files to git index..."
+          git add -v src/components/HallOfFame/index.tsx
+          git add -v .contributors-cache.json
+          git add -v .repo-cache.json
+          
+          # Force add the component if needed (to ensure it's included)
+          if ! git diff --cached --name-only | grep -q "src/components/HallOfFame/index.tsx"; then
+            echo "⚠️ Hall of Fame component not staged - trying to force add..."
+            git add -f src/components/HallOfFame/index.tsx
+          fi
+          
+          # Show what's staged
+          echo "Files staged for commit:"
+          git diff --cached --name-only
+          echo "::endgroup::"
+          
+          # Check if there are any changes to commit
+          echo "::group::Committing changes"
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          else
+            # Show diff stats
+            git diff --cached --stat
+            
+            # Commit the changes with timestamp and details
+            # Extract documentation hero name safely
+            DOC_HERO=$(grep -o "login: '[^']*'" src/components/HallOfFame/index.tsx | head -1 | sed "s/login: '//g" | sed "s/'$//g" || echo "unknown")
+            
+            git commit -m "Update community hall of fame contributors [$(date -u '+%Y-%m-%d')]" \
+                     -m "Updated by GitHub Actions workflow" \
+                     -m "Documentation Hero: ${DOC_HERO}"
+            
+            echo "Pushing changes..."
+            git push
+            
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+            echo "✅ Successfully committed and pushed changes"
+          fi
+          echo "::endgroup::"
+      
+      # Trigger deployment workflow only if changes were made
+      - name: Trigger deployment
+        if: steps.commit.outputs.changes_made == 'true'
+        run: |
+          echo "::group::Triggering site deployment"
+          echo "Contributors were updated, triggering site deployment..."
+          
+          # Get current time for reference
+          TRIGGER_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          
+          # Run deployment workflow
+          gh workflow run "Deploy to GitHub Pages" --repo ${{ github.repository }}
+          
+          echo "Deployment workflow triggered at $TRIGGER_TIME"
+          echo "Visit https://github.com/${{ github.repository }}/actions to monitor deployment progress"
+          echo "::endgroup::"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Always emit detailed metrics for troubleshooting
+      - name: Report job metrics
+        if: always()
+        run: |
+          echo "::group::Job Summary"
+          echo "Job completed at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Executor: ${{ runner.os }} / ${{ runner.name }}"
+          
+          # Show if force refresh was enabled
+          if [ "${{ github.event.inputs.force_refresh }}" == "true" ]; then
+            echo "🔄 Force refresh was enabled - ignored cache and fetched fresh data"
+          fi
+          
+          # Show if component was successfully updated
+          if grep -q "isDocHero: true" src/components/HallOfFame/index.tsx 2>/dev/null; then
+            # Extract hero name safely
+            DOC_HERO=$(grep -o "login: '[^']*'" src/components/HallOfFame/index.tsx | head -1 | sed "s/login: '//g" | sed "s/'.*//g" || echo "unknown")
+            echo "✅ Documentation Hero: ${DOC_HERO} (correctly marked in component)"
+          else
+            echo "⚠️ No Documentation Hero found in component"
+          fi
+          
+          # Check update status
+          if [ "${{ steps.commit.outputs.changes_made }}" == "true" ]; then
+            echo "✅ Changes were committed and pushed"
+          else
+            echo "ℹ️ No changes were committed (no updates needed or error occurred)"
+          fi
+          echo "::endgroup::"
+          
+          echo "::group::GitHub API Rate Limit Status"
+          # Query GitHub API rate limit status - useful for diagnosing issues
+          TOKEN=${{ secrets.GITHUB_TOKEN }} 
+          curl -s -H "Authorization: token $TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/rate_limit | jq
+          echo "::endgroup::"
+          
+          echo "::group::File Status"
+          ls -la src/components/HallOfFame/
+          echo ""
+          echo "Cache files:"
+          ls -la .contributors-cache.json .repo-cache.json 2>/dev/null || echo "No cache files found"
+          echo "::endgroup::"

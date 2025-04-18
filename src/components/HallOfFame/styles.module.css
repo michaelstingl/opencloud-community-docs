@@ -1,0 +1,168 @@
+.hallOfFame {
+  padding: 3rem 0;
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.hallOfFameTitle {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.hallOfFameSubtitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.hallOfFameSubtitle small {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.contributorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.contributorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: var(--ifm-card-background-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.contributorCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profileLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.contributorAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 0.75rem;
+  border: 3px solid var(--ifm-color-primary);
+  transition: transform 0.2s ease;
+}
+
+.profileLink:hover .contributorAvatar {
+  transform: scale(1.05);
+}
+
+.contributorInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.contributorName {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--ifm-font-color-base);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.docHeroBadge {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
+  animation: pulse 2s infinite;
+  margin: 0 0.2rem;
+}
+
+.badgeLabel {
+  font-size: 0.75rem;
+  background-color: var(--ifm-color-primary-lighter);
+  color: var(--ifm-color-white);
+  padding: 0.2rem 0.5rem 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-content: center;
+  width: fit-content;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badgeEmoji {
+  font-size: 1rem;
+  margin-right: 0.2rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.contributionsLink {
+  text-decoration: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.25rem;  /* Reduzierter Radius für natürlicheres Aussehen */
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: inline-block;
+}
+
+.contributionsLink:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary-darker);
+}
+
+.contributorStats {
+  font-size: 0.9rem;
+  color: var(--ifm-color-primary);
+}
+
+.viewAllLink {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.viewAllLink a {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.viewAllLink a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contributorsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .contributorsGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,8 @@
+opencloud:
+  description: OpenCloud-related updates and information
+
+helm:
+  description: Content related to Helm charts and Kubernetes deployment
+
+documentation:
+  description: Updates about the documentation itself

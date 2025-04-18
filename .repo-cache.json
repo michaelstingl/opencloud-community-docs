@@ -1,0 +1,248 @@
+{
+  "timestamp": 1744932007992,
+  "repos": [
+    {
+      "owner": "opencloud-eu",
+      "repo": "web",
+      "isFork": false,
+      "stars": 73,
+      "updated_at": "2025-04-17T06:18:51Z",
+      "pushed_at": "2025-04-17T22:53:04Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "opencloud",
+      "isFork": false,
+      "stars": 1042,
+      "updated_at": "2025-04-17T19:58:40Z",
+      "pushed_at": "2025-04-17T19:42:36Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "web-extensions",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-17T06:17:48Z",
+      "pushed_at": "2025-04-17T19:26:42Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "docs",
+      "isFork": false,
+      "stars": 6,
+      "updated_at": "2025-04-17T16:24:00Z",
+      "pushed_at": "2025-04-17T16:24:08Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "helm",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-16T09:57:26Z",
+      "pushed_at": "2025-04-17T15:35:38Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "desktop",
+      "isFork": false,
+      "stars": 52,
+      "updated_at": "2025-04-17T03:29:13Z",
+      "pushed_at": "2025-04-17T12:32:36Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "ios",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-17T09:51:21Z",
+      "pushed_at": "2025-04-17T09:51:21Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "dummy-files",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-17T09:49:37Z",
+      "pushed_at": "2025-04-17T09:49:37Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "web-app-skeleton",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-17T07:34:22Z",
+      "pushed_at": "2025-04-17T07:34:29Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "gh-labels",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-16T19:39:38Z",
+      "pushed_at": "2025-04-16T19:39:35Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "reva",
+      "isFork": true,
+      "stars": 10,
+      "updated_at": "2025-04-16T09:40:34Z",
+      "pushed_at": "2025-04-16T09:41:14Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "craft-blueprints-opencloud",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-14T14:07:39Z",
+      "pushed_at": "2025-04-16T09:03:55Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "awesome-apps",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-14T13:14:46Z",
+      "pushed_at": "2025-04-14T13:14:42Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "ios-sdk",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-15T15:29:23Z",
+      "pushed_at": "2025-04-11T15:35:53Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": ".github",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-07T03:57:01Z",
+      "pushed_at": "2025-04-07T03:56:58Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "rclone",
+      "isFork": true,
+      "stars": 0,
+      "updated_at": "2025-04-02T07:44:50Z",
+      "pushed_at": "2025-04-04T11:03:17Z",
+      "has_issues": false
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "ci-build-deps-desktop",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-04-03T09:07:41Z",
+      "pushed_at": "2025-04-03T09:07:37Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "desktop-shell-integration-resources",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-03-12T10:32:30Z",
+      "pushed_at": "2025-03-31T15:33:00Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "desktop-shell-integration-nautilus",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-03-12T13:17:38Z",
+      "pushed_at": "2025-03-31T15:28:25Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "desktop-shell-integration-dolphin",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-03-12T13:18:26Z",
+      "pushed_at": "2025-03-31T15:27:37Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "cs3api-validator",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-03-25T08:35:33Z",
+      "pushed_at": "2025-03-25T08:35:31Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "openbuild",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-12T07:28:21Z",
+      "pushed_at": "2025-03-18T08:47:19Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "woodpecker-ci-config-service",
+      "isFork": false,
+      "stars": 1,
+      "updated_at": "2025-04-10T09:37:05Z",
+      "pushed_at": "2025-03-14T11:51:42Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "qa",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-03-10T08:50:51Z",
+      "pushed_at": "2025-03-10T08:50:48Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "libre-graph-api",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-02-28T16:12:02Z",
+      "pushed_at": "2025-03-07T14:11:40Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "Roadmap",
+      "isFork": false,
+      "stars": 2,
+      "updated_at": "2025-04-02T00:10:08Z",
+      "pushed_at": "2025-02-19T18:15:40Z",
+      "has_issues": true
+    },
+    {
+      "owner": "opencloud-eu",
+      "repo": "ci-docker-desktop",
+      "isFork": false,
+      "stars": 0,
+      "updated_at": "2025-02-17T13:15:56Z",
+      "pushed_at": "2025-02-17T13:15:53Z",
+      "has_issues": true
+    }
+  ]
+}

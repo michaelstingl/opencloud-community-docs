@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: OpenCloud Community Discussion
+    url: https://github.com/orgs/opencloud-eu/discussions
+    about: Please ask and answer questions here.
+  - name: OpenCloud Matrix Chat
+    url: https://matrix.to/#/#opencloud:matrix.org
+    about: Chat with community members on Matrix.

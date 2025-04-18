@@ -1,0 +1,48 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Custom variables for OpenCloud Community Nexus */
+:root {
+  /* Purple theme for Nexus to differentiate from official docs */
+  --ifm-color-primary: #6a4c93;
+  --ifm-color-primary-dark: #5f4584;
+  --ifm-color-primary-darker: #5a417d;
+  --ifm-color-primary-darkest: #4a3667;
+  --ifm-color-primary-light: #7553a2;
+  --ifm-color-primary-lighter: #7a57a8;
+  --ifm-color-primary-lightest: #8969b3;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(106, 76, 147, 0.1);
+  
+  /* Custom banner variables */
+  --nexus-banner-bg: rgba(106, 76, 147, 0.1);
+  --nexus-banner-border: rgba(106, 76, 147, 0.3);
+}
+
+/* Dark mode colors */
+[data-theme='dark'] {
+  --ifm-color-primary: #a17dc9;
+  --ifm-color-primary-dark: #9169c1;
+  --ifm-color-primary-darker: #885fbc;
+  --ifm-color-primary-darkest: #6f449f;
+  --ifm-color-primary-light: #b191d1;
+  --ifm-color-primary-lighter: #baa0d6;
+  --ifm-color-primary-lightest: #d3c3e6;
+  --docusaurus-highlighted-code-line-bg: rgba(161, 125, 201, 0.3);
+  
+  /* Custom banner variables for dark mode */
+  --nexus-banner-bg: rgba(161, 125, 201, 0.1);
+  --nexus-banner-border: rgba(161, 125, 201, 0.3);
+}
+
+/* Community Nexus Banner Style */
+.nexus-community-banner {
+  background-color: var(--nexus-banner-bg);
+  border: 1px solid var(--nexus-banner-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
