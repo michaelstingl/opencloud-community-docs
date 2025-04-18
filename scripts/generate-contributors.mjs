@@ -261,26 +261,53 @@ let EXCLUDED_USERS = [];
 
 // Try to import configuration from private repository
 try {
-  // Check if the exclusions file exists
-  const fs = require('fs');
   // Try multiple potential paths - for local development and GitHub Actions
   const potentialPaths = [
     path.resolve(__dirname, '../../gmbh/config/contributor-exclusions.js'),       // Local dev path
     path.resolve(__dirname, '../private-exclusions/config/contributor-exclusions.js'), // GitHub Actions path
   ];
   
+  // In ES modules, we need to use dynamic imports and fs promises
+  const { existsSync, readFileSync } = await import('fs');
+  
   // Find the first path that exists
-  const exclusionsPath = potentialPaths.find(p => fs.existsSync(p));
+  const exclusionsPath = potentialPaths.find(p => existsSync(p));
   
   if (exclusionsPath) {
     log('📋 Loading contributor exclusions from private configuration');
-    const exclusions = require(exclusionsPath);
     
-    // Use the loaded exclusions
-    EXCLUDED_COMPANIES = exclusions.EXCLUDED_COMPANIES || EXCLUDED_COMPANIES;
-    BOT_PATTERNS = exclusions.BOT_PATTERNS || BOT_PATTERNS;
-    BIO_KEYWORDS = exclusions.BIO_KEYWORDS || BIO_KEYWORDS;
-    EXCLUDED_USERS = exclusions.EXCLUDED_USERS || EXCLUDED_USERS;
+    // Since we can't require() in ES modules, load the file content and parse it
+    const fileContent = readFileSync(exclusionsPath, 'utf8');
+    
+    // Extract the arrays using regex for simple parsing
+    const extractArray = (name) => {
+      const regex = new RegExp(`exports\\.${name}\\s*=\\s*\\[(.*?)\\]`, 's');
+      const match = fileContent.match(regex);
+      if (match && match[1]) {
+        // Parse the array content safely
+        try {
+          return JSON.parse(`[${match[1].replace(/'/g, '"')}]`);
+        } catch (e) {
+          log(`⚠️ Error parsing ${name} from exclusion file: ${e.message}`, true);
+          return null;
+        }
+      }
+      return null;
+    };
+    
+    // Extract each exclusion list
+    const companies = extractArray('EXCLUDED_COMPANIES');
+    const bots = extractArray('BOT_PATTERNS');
+    const keywords = extractArray('BIO_KEYWORDS');
+    const users = extractArray('EXCLUDED_USERS');
+    
+    // Use the extracted lists if available
+    if (companies) EXCLUDED_COMPANIES = companies;
+    if (bots) BOT_PATTERNS = bots;
+    if (keywords) BIO_KEYWORDS = keywords;
+    if (users) EXCLUDED_USERS = users;
+    
+    log(`📋 Loaded exclusion lists: ${EXCLUDED_USERS.length} users, ${EXCLUDED_COMPANIES.length} companies, ${BIO_KEYWORDS.length} keywords`);
   } else {
     log('⚠️ Private exclusion configuration not found, using defaults');
   }
