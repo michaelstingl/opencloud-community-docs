@@ -20,8 +20,18 @@ for TYPE_INFO in "${HERO_TYPES[@]}"; do
   # Split type info
   IFS=":" read -r TYPE_PREFIX TYPE_NAME TYPE_CONTRIB_PROPERTY <<< "$TYPE_INFO"
   
-  # Find hero for this type
+  # Find hero for this type - search with more detailed context and debugging
+  echo "Searching for ${TYPE_PREFIX} hero..."
+  grep -n -B 5 -A 5 "is${TYPE_PREFIX}Hero: true" $COMPONENT_PATH || echo "No match found for ${TYPE_PREFIX} hero"
+  
+  # Try different grep approaches for more robust matching
   HERO=$(grep -B 3 "is${TYPE_PREFIX}Hero: true" $COMPONENT_PATH | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'$//g" || echo "")
+  
+  # If that didn't work, try a more lenient approach
+  if [ -z "$HERO" ]; then
+    echo "First approach failed, trying alternative method..."
+    HERO=$(grep "${TYPE_PREFIX}Hero" $COMPONENT_PATH -A 5 -B 5 | grep -o "login: '[^']*'" | head -1 | sed "s/login: '//g" | sed "s/'$//g" || echo "")
+  fi
   
   # If hero found, add to commit message
   if [ -n "$HERO" ]; then
@@ -30,6 +40,14 @@ for TYPE_INFO in "${HERO_TYPES[@]}"; do
     echo "✅ Found ${TYPE_NAME}: ${HERO} with ${CONTRIBUTIONS} contributions"
   fi
 done
+
+# Debug final output
+echo "Final Commit Message:"
+echo -e "$COMMIT_MSG"
+
+# Also dump component content for debugging
+echo "Component content (first 50 lines):"
+head -n 50 $COMPONENT_PATH
 
 # Output the commit message to be used by the calling script
 echo -e "$COMMIT_MSG"
