@@ -6,6 +6,12 @@ on:
       - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      verbose_logging:
+        description: "Enable detailed logging output"
+        type: boolean
+        default: false
+        required: false
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -39,9 +45,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run build
+        run: |
+          # Set verbose logging environment variable based on input
+          if [ "${{ github.event.inputs.verbose_logging }}" == "true" ]; then
+            echo "🔊 Verbose logging enabled for build"
+            export VERBOSE_LOGGING=true
+          else
+            echo "🔇 Standard logging mode"
+            export VERBOSE_LOGGING=false
+          fi
+          
+          # Run build with environment variable
+          npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERBOSE_LOGGING: ${{ github.event.inputs.verbose_logging == 'true' }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
