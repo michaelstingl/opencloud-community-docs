@@ -35,6 +35,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Checkout private exclusion repository
+        uses: actions/checkout@v4
+        with:
+          repository: opencloud-community/gmbh
+          path: private-exclusions
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
