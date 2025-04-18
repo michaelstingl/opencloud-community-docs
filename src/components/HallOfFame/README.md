@@ -225,3 +225,13 @@ If the component is not updating:
 - **Rate limiting**: GitHub API has rate limits, especially for unauthenticated requests
 - **Parsing errors**: Comments in the exclusion lists can sometimes cause parsing issues in the arrays
 - **Empty arrays**: If an exclusion list is empty, it may be logged as "0 users" but this shouldn't affect functionality
+- **Node.js fetch compatibility**: The script uses the built-in `fetch` API available in Node.js v18+. No external fetch library is needed. If you see errors related to `fetch`, make sure you're using Node.js v18.0.0 or higher.
+
+### Node.js Version Requirements
+
+This component uses the following Node.js features:
+- **ES Modules**: Scripts use the `.mjs` extension and ES module syntax
+- **Top-level await**: For API calls and file operations
+- **Built-in fetch API**: Available in Node.js v18+ (no need for `node-fetch` package)
+
+GitHub Actions workflows are configured to use Node.js v18, which supports all these features. If running locally, ensure you're using at least Node.js v18.0.0.
