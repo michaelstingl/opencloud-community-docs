@@ -1,0 +1,81 @@
+{
+  "timestamp": 1745033643142,
+  "createdAt": "2025-04-19T03:34:03.142Z",
+  "count": 9,
+  "contributors": [
+    {
+      "login": "prashant-gurung899",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53248463?v=4",
+      "html_url": "https://github.com/prashant-gurung899",
+      "contributions": 10,
+      "docContributions": 3,
+      "goContributions": 0
+    },
+    {
+      "login": "PrajwolAmatya",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83579989?v=4",
+      "html_url": "https://github.com/PrajwolAmatya",
+      "contributions": 5,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "michaelstingl",
+      "avatar_url": "https://avatars.githubusercontent.com/u/214010?v=4",
+      "html_url": "https://github.com/michaelstingl",
+      "contributions": 4,
+      "docContributions": 5,
+      "goContributions": 0,
+      "isDocHero": true,
+      "docHeroBadge": "🦸"
+    },
+    {
+      "login": "dschmidt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/448487?v=4",
+      "html_url": "https://github.com/dschmidt",
+      "contributions": 4,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "LukasHirt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
+      "html_url": "https://github.com/LukasHirt",
+      "contributions": 2,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "FelixDobler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46747171?v=4",
+      "html_url": "https://github.com/FelixDobler",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "jochumdev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/358074?v=4",
+      "html_url": "https://github.com/jochumdev",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "skatsubo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16467385?v=4",
+      "html_url": "https://github.com/skatsubo",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "erikjv",
+      "avatar_url": "https://avatars.githubusercontent.com/u/151956?v=4",
+      "html_url": "https://github.com/erikjv",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    }
+  ]
+}
