@@ -108,7 +108,7 @@ helm repo update
 helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --set installCRDs=true
+  --set crds.enabled=true
 
 # Wait for cert-manager to be ready
 kubectl -n cert-manager wait --for=condition=Ready pods --all --timeout=60s
