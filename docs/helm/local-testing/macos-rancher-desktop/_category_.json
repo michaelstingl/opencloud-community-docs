@@ -2,7 +2,7 @@
   "label": "macOS with Rancher Desktop",
   "position": 2,
   "link": {
-    "type": "generated-index",
-    "description": "Guides for testing OpenCloud Helm Charts on macOS with Rancher Desktop"
+    "type": "doc",
+    "id": "helm/local-testing/macos-rancher-desktop/index"
   }
 }

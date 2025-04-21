@@ -2,6 +2,7 @@
 sidebar_position: 0
 title: Rancher Desktop on macOS
 description: Running OpenCloud with Helm charts on macOS using Rancher Desktop
+slug: /helm/local-testing/macos-rancher-desktop/overview
 ---
 
 # Rancher Desktop on macOS
