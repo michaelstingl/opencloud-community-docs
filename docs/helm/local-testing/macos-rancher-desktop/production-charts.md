@@ -198,11 +198,15 @@ kubectl create namespace opencloud
 
 # Install the production chart
 helm install opencloud -n opencloud ./charts/opencloud \
-  --set httproute.gateway.name=opencloud-gateway \
-  --set httproute.gateway.namespace=kube-system \
+  --set httpRoute.gateway.name=opencloud-gateway \
+  --set httpRoute.gateway.namespace=kube-system \
+  --set httpRoute.gateway.className=cilium \
   --set global.tls.enabled=true \
   --set global.tls.selfSigned=true
 ```
+
+> **Note**: If you're using Traefik instead of Cilium, change the className parameter:
+> `--set httpRoute.gateway.className=traefik`
 
 ## 7. Port Forwarding
 
@@ -294,8 +298,10 @@ To uninstall everything when you're done:
 # Uninstall OpenCloud
 helm uninstall -n opencloud opencloud
 
-# Uninstall Gateway Controller
-helm uninstall -n kube-system cilium  # or traefik
+# Uninstall Gateway Controller (depending on which one you installed)
+helm uninstall -n kube-system cilium
+# OR
+helm uninstall -n kube-system traefik
 
 # Uninstall cert-manager
 helm uninstall -n cert-manager cert-manager
