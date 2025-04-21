@@ -14,6 +14,7 @@ This guide provides instructions for setting up a local environment for OpenClou
 - macOS with [Homebrew](https://brew.sh/) installed
 - [Rancher Desktop](https://rancherdesktop.io/) installed
 - [Helm](https://helm.sh/) installed (`brew install helm`)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed (`brew install kubectl`)
 - Basic familiarity with Kubernetes concepts
 
 ## 1. Setting Up Rancher Desktop

@@ -27,7 +27,14 @@ Both guides require:
 brew install helm
 ```
 
-4. [Rancher Desktop](https://rancherdesktop.io/) installed:
+4. [kubectl](https://kubernetes.io/docs/tasks/tools/) command-line tool:
+
+```bash
+# Install kubectl using Homebrew
+brew install kubectl
+```
+
+5. [Rancher Desktop](https://rancherdesktop.io/) installed:
 
 ```bash
 # Install Rancher Desktop using Homebrew

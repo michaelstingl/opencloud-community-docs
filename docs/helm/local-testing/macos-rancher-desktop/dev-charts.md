@@ -20,6 +20,13 @@ This guide shows you how to set up a local Kubernetes environment on macOS using
 brew install helm
 ```
 
+4. kubectl command-line tool
+
+```bash
+# Install kubectl using Homebrew
+brew install kubectl
+```
+
 ## Setting Up Rancher Desktop
 
 ```bash
