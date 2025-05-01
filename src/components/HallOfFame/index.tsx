@@ -73,7 +73,7 @@ const topContributors: Contributor[] = [
     contributions: 2,
     isDocHero: false,
     docHeroBadge: null,
-    docContributions: 1,
+    docContributions: 0,
     isGoHero: false,
     goHeroBadge: null,
     goContributions: 0
@@ -103,9 +103,9 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
-    login: 'erikjv',
-    avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
-    html_url: 'https://github.com/erikjv',
+    login: 'skatsubo',
+    avatar_url: 'https://avatars.githubusercontent.com/u/16467385?v=4',
+    html_url: 'https://github.com/skatsubo',
     contributions: 1,
     isDocHero: false,
     docHeroBadge: null,
@@ -115,9 +115,9 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
-    login: 'skatsubo',
-    avatar_url: 'https://avatars.githubusercontent.com/u/16467385?v=4',
-    html_url: 'https://github.com/skatsubo',
+    login: 'erikjv',
+    avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
+    html_url: 'https://github.com/erikjv',
     contributions: 1,
     isDocHero: false,
     docHeroBadge: null,
