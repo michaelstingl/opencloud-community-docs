@@ -202,23 +202,7 @@ cd opencloud-helm
 
 Now you can install the OpenCloud production chart. Choose the appropriate installation command based on your Gateway API controller:
 
-### Option A: Using Traefik Gateway Controller
-
-```bash
-# Create namespace
-kubectl create namespace opencloud
-
-# Install the production chart with Traefik settings
-helm install opencloud -n opencloud ./charts/opencloud \
-  --set httpRoute.gateway.name=opencloud-gateway \
-  --set httpRoute.gateway.namespace=kube-system \
-  --set httpRoute.gateway.className=traefik \
-  --set httpRoute.gateway.create=true \
-  --set global.tls.enabled=true \
-  --set global.tls.selfSigned=true
-```
-
-### Option B: Using Cilium Gateway Controller
+### Option A: Using Cilium Gateway Controller
 
 ```bash
 # Create namespace
@@ -229,6 +213,22 @@ helm install opencloud -n opencloud ./charts/opencloud \
   --set httpRoute.gateway.name=opencloud-gateway \
   --set httpRoute.gateway.namespace=kube-system \
   --set httpRoute.gateway.className=cilium \
+  --set httpRoute.gateway.create=true \
+  --set global.tls.enabled=true \
+  --set global.tls.selfSigned=true
+```
+
+### Option B: Using Traefik Gateway Controller
+
+```bash
+# Create namespace
+kubectl create namespace opencloud
+
+# Install the production chart with Traefik settings
+helm install opencloud -n opencloud ./charts/opencloud \
+  --set httpRoute.gateway.name=opencloud-gateway \
+  --set httpRoute.gateway.namespace=kube-system \
+  --set httpRoute.gateway.className=traefik \
   --set httpRoute.gateway.create=true \
   --set global.tls.enabled=true \
   --set global.tls.selfSigned=true
