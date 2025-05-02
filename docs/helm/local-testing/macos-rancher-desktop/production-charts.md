@@ -85,11 +85,25 @@ kubectl get deploy -n kube-system traefik
 kubectl -n kube-system get deploy traefik -o yaml | grep -i gateway
 ```
 
+**Expected output if Gateway API is enabled:**
+You should see a line containing either `--experimental.kubernetesgateway` (older Traefik versions) or `--providers.kubernetesgateway` (newer Traefik versions) in the args section. For example:
+```
+args:
+- --experimental.kubernetesgateway
+```
+
+**If no output appears:**
+This means Gateway API support is not enabled in the current Traefik installation.
+
 If Traefik is installed but doesn't have Gateway API support, you can either:
 
 1. **Use the existing Traefik installation**: Update the existing Traefik deployment to enable Gateway API
    ```bash
+   # For older Traefik versions (v2.5 and below)
    kubectl -n kube-system patch deploy traefik --type=json -p='[{"op":"add", "path":"/spec/template/spec/containers/0/args/-", "value":"--experimental.kubernetesgateway"}]'
+   
+   # OR for newer Traefik versions (v2.6+)
+   kubectl -n kube-system patch deploy traefik --type=json -p='[{"op":"add", "path":"/spec/template/spec/containers/0/args/-", "value":"--providers.kubernetesgateway"}]'
    ```
 
 2. **Install a new Traefik instance**: If the patch doesn't work or you prefer a fresh installation
@@ -101,7 +115,15 @@ If Traefik is installed but doesn't have Gateway API support, you can either:
    helm repo add traefik https://traefik.github.io/charts
    helm repo update
    
-   # Install Traefik with Gateway API support
+   # Install Traefik with Gateway API support (choose the right command based on your Traefik version)
+   
+   # For newer Traefik versions (v2.6+)
+   helm install traefik traefik/traefik \
+     --namespace kube-system \
+     --set providers.kubernetesGateway.enabled=true \
+     --set ports.websecure.tls.enabled=true
+   
+   # OR for older Traefik versions (v2.5 and below)
    helm install traefik traefik/traefik \
      --namespace kube-system \
      --set experimental.kubernetesGateway.enabled=true \
@@ -421,8 +443,12 @@ If you're using Rancher Desktop, here's a quick summary of the installation proc
 1. **Gateway API is already installed** with Rancher Desktop (k3s), you don't need to install the CRDs
 2. **Traefik is pre-installed** but may need Gateway API support enabled:
    - Check if Gateway API is enabled: `kubectl -n kube-system get deploy traefik -o yaml | grep -i gateway`
-   - If not enabled, apply the patch or reinstall Traefik as shown in section 3
+   - If the command returns nothing, it means Gateway API is not enabled
+   - If enabled, you'll see `--experimental.kubernetesgateway` or `--providers.kubernetesgateway` in the output
+   - If not enabled, apply the appropriate patch for your Traefik version or reinstall Traefik as shown in section 3
 3. **Create the GatewayClass** for Traefik: This is required and not automatically created
 4. **Follow all other steps as written** (cert-manager, Gateway, OpenCloud installation)
 
 For most Rancher Desktop users, using the pre-installed Traefik with Gateway API enabled will be the simplest approach.
+
+> **Note**: The configuration commands may vary depending on your Traefik version. Newer versions (v2.6+) use `--providers.kubernetesgateway` while older versions use `--experimental.kubernetesgateway`. Check your Traefik version with `kubectl -n kube-system get deploy traefik -o yaml | grep image` if you're unsure.
