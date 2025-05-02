@@ -240,7 +240,7 @@ kubectl -n kube-system port-forward deploy/cilium-gateway-opencloud-gateway 8443
 ### For Traefik:
 
 ```bash
-kubectl -n kube-system port-forward deploy/traefik 8443:443
+kubectl -n kube-system port-forward deploy/traefik 8443:8443
 ```
 
 Keep this terminal window open while you're testing.
