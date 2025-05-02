@@ -201,12 +201,21 @@ helm install opencloud -n opencloud ./charts/opencloud \
   --set httpRoute.gateway.name=opencloud-gateway \
   --set httpRoute.gateway.namespace=kube-system \
   --set httpRoute.gateway.className=cilium \
+  --set httpRoute.gateway.create=false \
   --set global.tls.enabled=true \
   --set global.tls.selfSigned=true
 ```
 
 > **Note**: If you're using Traefik instead of Cilium, change the className parameter:
 > `--set httpRoute.gateway.className=traefik`
+>
+> **Advanced Configuration Options**:
+> 
+> The chart supports several advanced configuration options introduced in recent updates:
+> 
+> - Setting environment variables: `--set opencloud.env[0].name=MY_VAR,opencloud.env[0].value=myvalue`
+> - Enabling proxy basic auth: `--set opencloud.proxy.basicAuth.enabled=true`
+> - Custom namespace handling: The chart now automatically uses the correct namespace
 
 ## 7. Port Forwarding
 

@@ -48,7 +48,7 @@ brew install --cask rancher
 kubectl create namespace opencloud
 
 # Install the OpenCloud DEV chart
-helm install opencloud -n opencloud ./opencloud-dev
+helm install opencloud -n opencloud ./charts/opencloud-dev
 
 # Watch the pod status until it's ready
 kubectl get pods -n opencloud -w
