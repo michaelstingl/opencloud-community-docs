@@ -200,24 +200,60 @@ cd opencloud-helm
 
 ## 7. Installing OpenCloud Production Chart
 
-Now you can install the OpenCloud production chart:
+Now you can install the OpenCloud production chart. Choose the appropriate installation command based on your Gateway API controller:
+
+### Option A: Using Traefik Gateway Controller
 
 ```bash
 # Create namespace
 kubectl create namespace opencloud
 
-# Install the production chart
+# Install the production chart with Traefik settings
 helm install opencloud -n opencloud ./charts/opencloud \
   --set httpRoute.gateway.name=opencloud-gateway \
   --set httpRoute.gateway.namespace=kube-system \
-  --set httpRoute.gateway.className=cilium \
-  --set httpRoute.gateway.create=false \
+  --set httpRoute.gateway.className=traefik \
+  --set httpRoute.gateway.create=true \
   --set global.tls.enabled=true \
   --set global.tls.selfSigned=true
 ```
 
-> **Note**: If you're using Traefik instead of Cilium, change the className parameter:
-> `--set httpRoute.gateway.className=traefik`
+### Option B: Using Cilium Gateway Controller
+
+```bash
+# Create namespace
+kubectl create namespace opencloud
+
+# Install the production chart with Cilium settings
+helm install opencloud -n opencloud ./charts/opencloud \
+  --set httpRoute.gateway.name=opencloud-gateway \
+  --set httpRoute.gateway.namespace=kube-system \
+  --set httpRoute.gateway.className=cilium \
+  --set httpRoute.gateway.create=true \
+  --set global.tls.enabled=true \
+  --set global.tls.selfSigned=true
+```
+
+> **Important**: Note that we're setting `httpRoute.gateway.create=true` to ensure the Gateway is correctly configured for the HTTPRoutes. If you already have a Gateway that you want to use, make sure its listener names match the expected names in the HTTPRoutes (opencloud-https, keycloak-https, etc.).
+>
+> **Troubleshooting Gateway Issues**:
+> 
+> If you encounter 404 errors or connectivity issues:
+>
+> 1. Check that both the Gateway and HTTPRoutes are correctly configured:
+>    ```bash
+>    kubectl get gateway -n kube-system
+>    kubectl get httproute -n opencloud
+>    ```
+>
+> 2. If necessary, uninstall and reinstall with the correct parameters:
+>    ```bash
+>    # Clean up completely
+>    helm uninstall opencloud -n opencloud
+>    kubectl delete namespace opencloud
+>    
+>    # Then reinstall using one of the commands above
+>    ```
 >
 > **Advanced Configuration Options**:
 > 
