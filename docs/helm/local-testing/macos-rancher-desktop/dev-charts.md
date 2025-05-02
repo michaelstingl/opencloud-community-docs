@@ -75,6 +75,8 @@ kubectl port-forward -n opencloud svc/opencloud-service 9200:443
 Now access OpenCloud at [https://localhost:9200](https://localhost:9200) in your browser.
 You'll need to accept the security risk from the self-signed certificate.
 
+> **Note**: We're using port 9200 here to avoid conflicts with the privileged port 443, which would require root privileges on macOS/Linux systems.
+
 Login with:
 - Username: `admin`
 - Password: `admin`

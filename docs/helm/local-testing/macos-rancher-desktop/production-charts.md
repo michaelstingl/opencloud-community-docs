@@ -229,26 +229,30 @@ helm install opencloud -n opencloud ./charts/opencloud \
 
 ## 8. Port Forwarding
 
-You need to set up port forwarding from your localhost to the Gateway:
+You need to set up port forwarding from your localhost to the Gateway. Since port 443 is a privileged port on macOS, we'll use a higher port (like 8443) for local forwarding:
 
 ### For Cilium:
 
 ```bash
-kubectl -n kube-system port-forward deploy/cilium-gateway-opencloud-gateway 443:443
+kubectl -n kube-system port-forward deploy/cilium-gateway-opencloud-gateway 8443:443
 ```
 
 ### For Traefik:
 
 ```bash
-kubectl -n kube-system port-forward deploy/traefik 443:443
+kubectl -n kube-system port-forward deploy/traefik 8443:443
 ```
 
 Keep this terminal window open while you're testing.
 
+> **Note**: We're using port 8443 instead of 443 because ports below 1024 require root privileges on macOS/Linux systems. You'll access OpenCloud at https://cloud.opencloud.test:8443 in this setup.
+>
+> If you need to use the standard port 443, you can update your local DNS settings or use a reverse proxy.
+
 ## 9. Accessing OpenCloud
 
 Open your browser and navigate to:
-- https://cloud.opencloud.test
+- https://cloud.opencloud.test:8443
 
 **Default credentials:**
 - Username: admin
