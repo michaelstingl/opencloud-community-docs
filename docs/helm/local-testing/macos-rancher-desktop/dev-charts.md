@@ -41,6 +41,16 @@ brew install --cask rancher
    - Enable Kubernetes
    - Allow Kubernetes to start completely
 
+## Getting the OpenCloud Helm Charts
+
+First, clone the OpenCloud Helm charts repository:
+
+```bash
+# Clone the OpenCloud Helm repository
+git clone https://github.com/opencloud-eu/helm.git opencloud-helm
+cd opencloud-helm
+```
+
 ## Installing OpenCloud DEV Chart
 
 ```bash

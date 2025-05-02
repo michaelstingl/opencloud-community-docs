@@ -188,7 +188,17 @@ spec:
 EOF
 ```
 
-## 6. Installing OpenCloud Production Chart
+## 6. Getting the OpenCloud Helm Charts
+
+Before installing, clone the OpenCloud Helm charts repository:
+
+```bash
+# Clone the OpenCloud Helm repository
+git clone https://github.com/opencloud-eu/helm.git opencloud-helm
+cd opencloud-helm
+```
+
+## 7. Installing OpenCloud Production Chart
 
 Now you can install the OpenCloud production chart:
 
@@ -217,7 +227,7 @@ helm install opencloud -n opencloud ./charts/opencloud \
 > - Enabling proxy basic auth: `--set opencloud.proxy.basicAuth.enabled=true`
 > - Custom namespace handling: The chart now automatically uses the correct namespace
 
-## 7. Port Forwarding
+## 8. Port Forwarding
 
 You need to set up port forwarding from your localhost to the Gateway:
 
@@ -235,7 +245,7 @@ kubectl -n kube-system port-forward deploy/traefik 443:443
 
 Keep this terminal window open while you're testing.
 
-## 8. Accessing OpenCloud
+## 9. Accessing OpenCloud
 
 Open your browser and navigate to:
 - https://cloud.opencloud.test
