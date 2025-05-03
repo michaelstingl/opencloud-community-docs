@@ -1,7 +1,7 @@
 {
-  "timestamp": 1746157407096,
-  "createdAt": "2025-05-02T03:43:27.096Z",
-  "count": 9,
+  "timestamp": 1746243571772,
+  "createdAt": "2025-05-03T03:39:31.772Z",
+  "count": 8,
   "contributors": [
     {
       "login": "prashant-gurung899",
@@ -30,22 +30,6 @@
       "docHeroBadge": "🦸"
     },
     {
-      "login": "dschmidt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/448487?v=4",
-      "html_url": "https://github.com/dschmidt",
-      "contributions": 4,
-      "docContributions": 0,
-      "goContributions": 0
-    },
-    {
-      "login": "LukasHirt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
-      "html_url": "https://github.com/LukasHirt",
-      "contributions": 2,
-      "docContributions": 0,
-      "goContributions": 0
-    },
-    {
       "login": "FelixDobler",
       "avatar_url": "https://avatars.githubusercontent.com/u/46747171?v=4",
       "html_url": "https://github.com/FelixDobler",
@@ -65,6 +49,14 @@
       "login": "skatsubo",
       "avatar_url": "https://avatars.githubusercontent.com/u/16467385?v=4",
       "html_url": "https://github.com/skatsubo",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "LukasHirt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
+      "html_url": "https://github.com/LukasHirt",
       "contributions": 1,
       "docContributions": 0,
       "goContributions": 0

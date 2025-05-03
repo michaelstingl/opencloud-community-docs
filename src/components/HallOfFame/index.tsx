@@ -55,30 +55,6 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
-    login: 'dschmidt',
-    avatar_url: 'https://avatars.githubusercontent.com/u/448487?v=4',
-    html_url: 'https://github.com/dschmidt',
-    contributions: 4,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'LukasHirt',
-    avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
-    html_url: 'https://github.com/LukasHirt',
-    contributions: 2,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
     login: 'FelixDobler',
     avatar_url: 'https://avatars.githubusercontent.com/u/46747171?v=4',
     html_url: 'https://github.com/FelixDobler',
@@ -106,6 +82,18 @@ const topContributors: Contributor[] = [
     login: 'skatsubo',
     avatar_url: 'https://avatars.githubusercontent.com/u/16467385?v=4',
     html_url: 'https://github.com/skatsubo',
+    contributions: 1,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
+    login: 'LukasHirt',
+    avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
+    html_url: 'https://github.com/LukasHirt',
     contributions: 1,
     isDocHero: false,
     docHeroBadge: null,
