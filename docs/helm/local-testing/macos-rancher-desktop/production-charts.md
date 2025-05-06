@@ -313,7 +313,7 @@ helm install opencloud -n opencloud ./charts/opencloud \
 > 
 > - Setting environment variables: `--set opencloud.env[0].name=MY_VAR,opencloud.env[0].value=myvalue`
 > - Enabling proxy basic auth: `--set opencloud.proxy.basicAuth.enabled=true`
-> - Custom namespace handling: The chart now automatically uses the correct namespace
+> - Improved namespace handling: The chart now automatically uses Helm's release namespace for all resources without requiring explicit namespace configuration
 
 ## 8. Port Forwarding
 
