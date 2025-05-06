@@ -22,7 +22,7 @@ const topContributors: Contributor[] = [
     login: 'prashant-gurung899',
     avatar_url: 'https://avatars.githubusercontent.com/u/53248463?v=4',
     html_url: 'https://github.com/prashant-gurung899',
-    contributions: 10,
+    contributions: 11,
     isDocHero: false,
     docHeroBadge: null,
     docContributions: 3,
@@ -49,7 +49,7 @@ const topContributors: Contributor[] = [
     contributions: 4,
     isDocHero: true,
     docHeroBadge: "🦸",
-    docContributions: 5,
+    docContributions: 9,
     isGoHero: false,
     goHeroBadge: null,
     goContributions: 0
@@ -79,6 +79,30 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
+    login: 'anon-pradip',
+    avatar_url: 'https://avatars.githubusercontent.com/u/27019402?v=4',
+    html_url: 'https://github.com/anon-pradip',
+    contributions: 1,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
+    login: 'erikjv',
+    avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
+    html_url: 'https://github.com/erikjv',
+    contributions: 1,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
     login: 'skatsubo',
     avatar_url: 'https://avatars.githubusercontent.com/u/16467385?v=4',
     html_url: 'https://github.com/skatsubo',
@@ -94,18 +118,6 @@ const topContributors: Contributor[] = [
     login: 'LukasHirt',
     avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
     html_url: 'https://github.com/LukasHirt',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 1,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'erikjv',
-    avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
-    html_url: 'https://github.com/erikjv',
     contributions: 1,
     isDocHero: false,
     docHeroBadge: null,

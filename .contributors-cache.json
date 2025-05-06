@@ -1,13 +1,13 @@
 {
-  "timestamp": 1746416828575,
-  "createdAt": "2025-05-05T03:47:08.575Z",
-  "count": 8,
+  "timestamp": 1746502960023,
+  "createdAt": "2025-05-06T03:42:40.023Z",
+  "count": 9,
   "contributors": [
     {
       "login": "prashant-gurung899",
       "avatar_url": "https://avatars.githubusercontent.com/u/53248463?v=4",
       "html_url": "https://github.com/prashant-gurung899",
-      "contributions": 10,
+      "contributions": 11,
       "docContributions": 3,
       "goContributions": 0
     },
@@ -24,7 +24,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/214010?v=4",
       "html_url": "https://github.com/michaelstingl",
       "contributions": 4,
-      "docContributions": 5,
+      "docContributions": 9,
       "goContributions": 0,
       "isDocHero": true,
       "docHeroBadge": "🦸"
@@ -46,6 +46,22 @@
       "goContributions": 0
     },
     {
+      "login": "anon-pradip",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27019402?v=4",
+      "html_url": "https://github.com/anon-pradip",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
+      "login": "erikjv",
+      "avatar_url": "https://avatars.githubusercontent.com/u/151956?v=4",
+      "html_url": "https://github.com/erikjv",
+      "contributions": 1,
+      "docContributions": 0,
+      "goContributions": 0
+    },
+    {
       "login": "skatsubo",
       "avatar_url": "https://avatars.githubusercontent.com/u/16467385?v=4",
       "html_url": "https://github.com/skatsubo",
@@ -57,14 +73,6 @@
       "login": "LukasHirt",
       "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
       "html_url": "https://github.com/LukasHirt",
-      "contributions": 1,
-      "docContributions": 1,
-      "goContributions": 0
-    },
-    {
-      "login": "erikjv",
-      "avatar_url": "https://avatars.githubusercontent.com/u/151956?v=4",
-      "html_url": "https://github.com/erikjv",
       "contributions": 1,
       "docContributions": 0,
       "goContributions": 0
