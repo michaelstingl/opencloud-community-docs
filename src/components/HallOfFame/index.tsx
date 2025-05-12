@@ -79,6 +79,18 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
+    login: 'Eliaxs1900',
+    avatar_url: 'https://avatars.githubusercontent.com/u/12803951?v=4',
+    html_url: 'https://github.com/Eliaxs1900',
+    contributions: 1,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
     login: 'anon-pradip',
     avatar_url: 'https://avatars.githubusercontent.com/u/27019402?v=4',
     html_url: 'https://github.com/anon-pradip',
