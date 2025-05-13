@@ -1,7 +1,7 @@
 {
-  "timestamp": 1747021747437,
-  "createdAt": "2025-05-12T03:49:07.437Z",
-  "count": 8,
+  "timestamp": 1747108002617,
+  "createdAt": "2025-05-13T03:46:42.617Z",
+  "count": 7,
   "contributors": [
     {
       "login": "michaelstingl",
@@ -43,14 +43,6 @@
       "html_url": "https://github.com/LukasHirt",
       "contributions": 1,
       "docContributions": 1,
-      "goContributions": 0
-    },
-    {
-      "login": "Eliaxs1900",
-      "avatar_url": "https://avatars.githubusercontent.com/u/12803951?v=4",
-      "html_url": "https://github.com/Eliaxs1900",
-      "contributions": 1,
-      "docContributions": 0,
       "goContributions": 0
     },
     {
