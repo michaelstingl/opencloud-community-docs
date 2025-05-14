@@ -1,8 +1,16 @@
 {
-  "timestamp": 1747108002617,
-  "createdAt": "2025-05-13T03:46:42.617Z",
+  "timestamp": 1747194300373,
+  "createdAt": "2025-05-14T03:45:00.373Z",
   "count": 7,
   "contributors": [
+    {
+      "login": "anon-pradip",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27019402?v=4",
+      "html_url": "https://github.com/anon-pradip",
+      "contributions": 13,
+      "docContributions": 0,
+      "goContributions": 0
+    },
     {
       "login": "michaelstingl",
       "avatar_url": "https://avatars.githubusercontent.com/u/214010?v=4",
@@ -41,14 +49,6 @@
       "login": "LukasHirt",
       "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
       "html_url": "https://github.com/LukasHirt",
-      "contributions": 1,
-      "docContributions": 1,
-      "goContributions": 0
-    },
-    {
-      "login": "anon-pradip",
-      "avatar_url": "https://avatars.githubusercontent.com/u/27019402?v=4",
-      "html_url": "https://github.com/anon-pradip",
       "contributions": 1,
       "docContributions": 0,
       "goContributions": 0

@@ -19,6 +19,18 @@ type Contributor = {
 // Contributors data is updated automatically by GitHub Actions
 const topContributors: Contributor[] = [
   {
+    login: 'anon-pradip',
+    avatar_url: 'https://avatars.githubusercontent.com/u/27019402?v=4',
+    html_url: 'https://github.com/anon-pradip',
+    contributions: 13,
+    isDocHero: false,
+    docHeroBadge: null,
+    docContributions: 0,
+    isGoHero: false,
+    goHeroBadge: null,
+    goContributions: 0
+  },
+  {
     login: 'michaelstingl',
     avatar_url: 'https://avatars.githubusercontent.com/u/214010?v=4',
     html_url: 'https://github.com/michaelstingl',
@@ -70,18 +82,6 @@ const topContributors: Contributor[] = [
     login: 'LukasHirt',
     avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
     html_url: 'https://github.com/LukasHirt',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 1,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
-    login: 'anon-pradip',
-    avatar_url: 'https://avatars.githubusercontent.com/u/27019402?v=4',
-    html_url: 'https://github.com/anon-pradip',
     contributions: 1,
     isDocHero: false,
     docHeroBadge: null,
