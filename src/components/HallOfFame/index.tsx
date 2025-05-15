@@ -37,7 +37,7 @@ const topContributors: Contributor[] = [
     contributions: 4,
     isDocHero: true,
     docHeroBadge: "🦸",
-    docContributions: 9,
+    docContributions: 10,
     isGoHero: false,
     goHeroBadge: null,
     goContributions: 0
