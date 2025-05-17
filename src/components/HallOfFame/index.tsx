@@ -79,18 +79,6 @@ const topContributors: Contributor[] = [
     goContributions: 0
   },
   {
-    login: 'LukasHirt',
-    avatar_url: 'https://avatars.githubusercontent.com/u/25989331?v=4',
-    html_url: 'https://github.com/LukasHirt',
-    contributions: 1,
-    isDocHero: false,
-    docHeroBadge: null,
-    docContributions: 0,
-    isGoHero: false,
-    goHeroBadge: null,
-    goContributions: 0
-  },
-  {
     login: 'erikjv',
     avatar_url: 'https://avatars.githubusercontent.com/u/151956?v=4',
     html_url: 'https://github.com/erikjv',

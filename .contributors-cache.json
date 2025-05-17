@@ -1,7 +1,7 @@
 {
-  "timestamp": 1747367266572,
-  "createdAt": "2025-05-16T03:47:46.572Z",
-  "count": 7,
+  "timestamp": 1747453293185,
+  "createdAt": "2025-05-17T03:41:33.185Z",
+  "count": 6,
   "contributors": [
     {
       "login": "anon-pradip",
@@ -41,14 +41,6 @@
       "login": "skatsubo",
       "avatar_url": "https://avatars.githubusercontent.com/u/16467385?v=4",
       "html_url": "https://github.com/skatsubo",
-      "contributions": 1,
-      "docContributions": 0,
-      "goContributions": 0
-    },
-    {
-      "login": "LukasHirt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/25989331?v=4",
-      "html_url": "https://github.com/LukasHirt",
       "contributions": 1,
       "docContributions": 0,
       "goContributions": 0
