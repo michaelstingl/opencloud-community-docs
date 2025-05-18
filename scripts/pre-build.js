@@ -1,7 +1,7 @@
 /**
  * Pre-build script to update contributors before Docusaurus build
  */
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
@@ -21,8 +21,8 @@ try {
   const scriptPath = path.resolve(__dirname, 'generate-contributors.mjs');
   
   if (fs.existsSync(scriptPath)) {
-    // Run the contributor update script
-    execSync('node ' + scriptPath, { 
+    // Run the contributor update script using a safer approach (not vulnerable to shell injection)
+    execFileSync('node', [scriptPath], { 
       stdio: 'inherit',
       env: { ...process.env }
     });
