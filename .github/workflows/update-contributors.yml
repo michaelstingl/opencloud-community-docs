@@ -1,9 +1,13 @@
-name: Update Contributor Stats
+name: Update Contributor Stats (DISABLED)
+
+# NOTE: This workflow has been temporarily disabled and the Hall of Fame component
+# has been removed from the homepage. The automated updates are paused until further notice.
+# The workflow can still be manually triggered if needed.
 
 on:
-  schedule:
-    - cron: "0 3 * * *"  # Run daily at 3:00 UTC (5:00 CET)
-  workflow_dispatch:     # Allow manual trigger
+  # schedule:
+  #   - cron: "0 3 * * *"  # Run daily at 3:00 UTC (5:00 CET) - DISABLED
+  workflow_dispatch:     # Allow manual trigger only
     inputs:
       force_refresh:
         description: "Ignore cache and fetch fresh data from GitHub API"
